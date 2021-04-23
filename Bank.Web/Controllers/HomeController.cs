@@ -1,27 +1,26 @@
-﻿using Bank.Web.Models;
+﻿using Bank.Core.Services.Home;
+using Bank.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Bank.Web.Data;
 
 namespace Bank.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHomeService _homeService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHomeService homeService)
         {
             _logger = logger;
+            _homeService = homeService;
         }
 
+        [ResponseCache(Duration = 30)]
         public IActionResult Index()
         {
-            return View();
+            return View(_homeService.GetStats());
         }
 
         public IActionResult Privacy()
