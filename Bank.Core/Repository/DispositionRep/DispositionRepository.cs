@@ -17,9 +17,9 @@ namespace Bank.Core.Repository.DispositionRep
             _dbContext = dbContext;
         }
 
-        public Task<List<Disposition>> ListAllByCustomerIdAsync(int customerId)
+        public async Task<IQueryable<Disposition>> ListAllByCustomerIdAsync(int customerId)
         {
-            return _dbContext.Dispositions.Include(a => a.Account).Where(i => i.CustomerId == customerId).ToListAsync();
+            return _dbContext.Dispositions.Include(a => a.Account).Where(i => i.CustomerId == customerId).AsQueryable();
         }
     }
 }

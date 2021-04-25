@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Bank.Core.Model;
 using Bank.Core.Repository.Base;
@@ -9,6 +10,6 @@ namespace Bank.Core.Repository.DispositionRep
 {
     public interface IDispositionRepository : IAsyncRepository<Disposition>
     {
-        Task<List<Disposition>> ListAllByCustomerIdAsync(int customerId);
+        Task<IQueryable<Disposition>> ListAllByCustomerIdAsync(int customerId);
     }
 }
