@@ -21,7 +21,10 @@
                         <tr>
                             <td>@account.AccountId</td>
                             <td>@account.Balance</td>
-                            <td><button class="btn btn-block btn-secondary btn-flat">More Information</button></td>
+                            <td>
+                                <a asp-controller="Transaction" asp-action="TransactionDetails" asp-route-accountid="@account.AccountId" class="btn btn-block btn-secondary btn-flat btn-sm m-0">Transaction Details</a>
+                            </td>
+
                         </tr>
                     }
                     <tr>

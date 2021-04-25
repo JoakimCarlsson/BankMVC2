@@ -16,6 +16,7 @@ using Bank.Core;
 using Bank.Core.Data;
 using Bank.Core.Services.Customers;
 using Bank.Core.Services.Home;
+using Bank.Core.Services.Transactions;
 
 namespace Bank.Web
 {
@@ -37,6 +38,7 @@ namespace Bank.Web
             services.AddCoreServices(); //bank.core
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<ITransactionService, TransactionService>();
             services.AddResponseCaching();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();

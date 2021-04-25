@@ -1,0 +1,68 @@
+﻿@model Bank.Core.ViewModels.Transactions.TransactionDetailsListViewModel
+
+@{
+    ViewBag.Title = "Transaction Details";
+    Layout = "_Layout";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Transaction Details</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Responsive Hover Table</h3>
+            <div class="card-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-default">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body table-responsive p-0">
+            <table class="table table-hover text-nowrap">
+                <thead>
+                    <tr>
+                        <th>TransactionId</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Operation</th>
+                        <th>Amount</th>
+                        <th>Balance</th>
+                        <th>Symbol</th>
+                        <th>Bank</th>
+                        <th>Account</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var transaction in Model.Transactions)
+                    {
+                    <tr>
+                        <td>@transaction.TransactionId</td>
+                        <td>@transaction.Date</td>
+                        <td>@transaction.Type</td>
+                        <td>@transaction.Operation</td>
+                        <td>@transaction.Amount</td>
+                        <td>@transaction.Balance</td>
+                        <td>@transaction.Symbol</td>
+                        <td>@transaction.Bank</td>
+                        <td>@transaction.Account</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

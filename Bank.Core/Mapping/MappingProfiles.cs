@@ -2,6 +2,7 @@
 using Bank.Core.Model;
 using Bank.Core.ViewModels.Accounts;
 using Bank.Core.ViewModels.Customers;
+using Bank.Core.ViewModels.Transactions;
 
 namespace Bank.Core.Mapping
 {
@@ -11,6 +12,7 @@ namespace Bank.Core.Mapping
         {
             CreateMap<Customer, CustomerDetailsViewModel>().ReverseMap();
             CreateMap<Account, AccountCustomerViewModel>().ReverseMap();
+            CreateMap<Transaction, TransactionDetailsViewModel>().ReverseMap();
         }
     }
 }
