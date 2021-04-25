@@ -14,7 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bank.Core;
 using Bank.Core.Data;
-using Bank.Core.Services.CustomerServ;
+using Bank.Core.Services.Customers;
 using Bank.Core.Services.Home;
 
 namespace Bank.Web

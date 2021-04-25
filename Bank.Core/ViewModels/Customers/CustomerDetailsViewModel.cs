@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Bank.Core.ViewModels.Accounts;
 
 namespace Bank.Core.ViewModels.Customers
 {
-    public class CustomerIndexViewModel
+    public class CustomerDetailsViewModel
     {
         public int CustomerId { get; set; }
         [DisplayName("First Name")]
@@ -30,6 +32,6 @@ namespace Bank.Core.ViewModels.Customers
         public string Telephonenumber { get; set; }
         [DisplayName("Email Address")]
         public string Emailaddress { get; set; }
-
+        public IEnumerable<AccountCustomerViewModel> Accounts { get; set; }
     }
 }

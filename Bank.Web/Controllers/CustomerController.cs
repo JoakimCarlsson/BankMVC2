@@ -1,7 +1,7 @@
-﻿using Bank.Core.Services.CustomerServ;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Bank.Core.Services.Customers;
 
 namespace Bank.Web.Controllers
 {

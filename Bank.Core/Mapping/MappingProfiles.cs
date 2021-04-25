@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bank.Core.Model;
+using Bank.Core.ViewModels.Accounts;
 using Bank.Core.ViewModels.Customers;
 
 namespace Bank.Core.Mapping
@@ -8,7 +9,8 @@ namespace Bank.Core.Mapping
     {
         public MappingProfiles()
         {
-            CreateMap<Customer, CustomerIndexViewModel>().ReverseMap();
+            CreateMap<Customer, CustomerDetailsViewModel>().ReverseMap();
+            CreateMap<Account, AccountCustomerViewModel>().ReverseMap();
         }
     }
 }
