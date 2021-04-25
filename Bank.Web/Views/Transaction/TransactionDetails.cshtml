@@ -16,53 +16,16 @@
 </section>
 
 <div class="col-12">
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Responsive Hover Table</h3>
-            <div class="card-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-default">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-body table-responsive p-0">
-            <table class="table table-hover text-nowrap">
-                <thead>
-                    <tr>
-                        <th>TransactionId</th>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Operation</th>
-                        <th>Amount</th>
-                        <th>Balance</th>
-                        <th>Symbol</th>
-                        <th>Bank</th>
-                        <th>Account</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var transaction in Model.Transactions)
-                    {
-                    <tr>
-                        <td>@transaction.TransactionId</td>
-                        <td>@transaction.Date</td>
-                        <td>@transaction.Type</td>
-                        <td>@transaction.Operation</td>
-                        <td>@transaction.Amount</td>
-                        <td>@transaction.Balance</td>
-                        <td>@transaction.Symbol</td>
-                        <td>@transaction.Bank</td>
-                        <td>@transaction.Account</td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <partial name="Transactions/_TransactionDetailsTable" model="@Model" />
+    <form asp-controller="Transaction"
+          asp-action="SingleTransactionPartial"
+          asp-route-accountId="@Model.AccountId"
+          asp-route-skip=""
+          data-ajax="true"
+          data-ajax-method="GET"
+          data-ajax-mode="after"
+          data-ajax-update="#transactions">
+        <input id="skip" name="skip" value="0" type="hidden" />
+        <button onclick='document.getElementById("skip").value = parseInt(document.getElementById("skip").value) + @Model.TransactionsToSkipInList' type="submit" class="btn btn-block btn-secondary btn-flat btn-sm m-0" style="width: 200px">Load More</button>
+    </form>
 </div>

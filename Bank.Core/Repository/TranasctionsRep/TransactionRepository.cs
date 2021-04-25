@@ -17,10 +17,9 @@ namespace Bank.Core.Repository.TranasctionsRep
             _dbContext = dbContext;
         }
 
-        public async Task<List<Transaction>> ListAllByAccountIdAsync(int accountId)
+        public async Task<IQueryable<Transaction>> ListAllByAccountIdAsync(int accountId)
         {
-            return await _dbContext.Transactions.Where(i => i.AccountId == accountId).ToListAsync();
-
+            return _dbContext.Transactions.Where(i => i.AccountId == accountId).AsQueryable();
         }
     }
 }

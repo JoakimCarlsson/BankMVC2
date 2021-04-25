@@ -9,6 +9,7 @@ namespace Bank.Core.ViewModels.Transactions
 {
     public class TransactionDetailsListViewModel
     {
+        public int AccountId { get; set; }
         public IEnumerable<TransactionDetailsViewModel> Transactions { get; set; }
         public int TransactionsToSkipInList { get; set; } = 20;
     }
