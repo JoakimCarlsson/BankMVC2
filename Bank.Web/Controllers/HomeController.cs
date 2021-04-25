@@ -25,11 +25,6 @@ namespace Bank.Web.Controllers
             return View(_homeService.GetStats());
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

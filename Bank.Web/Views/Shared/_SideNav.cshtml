@@ -28,31 +28,57 @@
 
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-header">EXAMPLES</li>
+                @*<li class="nav-header">EXAMPLES</li>*@
                 <li class="nav-item">
-                    <a href="pages/calendar.html" class="nav-link">
-                        <i class="nav-icon far fa-calendar-alt"></i>
-                        <p>
-                            Calendar
-                            <span class="badge badge-info right">2</span>
-                        </p>
-                    </a>
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home nav-icon"></i> Home</a>
                 </li>
+
                 <li class="nav-item">
-                    <a href="pages/gallery.html" class="nav-link">
-                        <i class="nav-icon far fa-image"></i>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-users nav-icon"></i>
                         <p>
-                            Gallery
+                            Customers
+                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="../../index.html" class="nav-link">
+                                <i class="fas fa-search fa-fw nav-icon"></i>
+                                <p>Search</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+                
                 <li class="nav-item">
-                    <a href="pages/kanban.html" class="nav-link">
-                        <i class="nav-icon fas fa-columns"></i>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-file-invoice nav-icon"></i>
                         <p>
-                            Kanban Board
+                            Transactions
+                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="../../index.html" class="nav-link">
+                                <i class="fas fa-search fa-fw nav-icon"></i>
+                                <p>Deposit</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../../index.html" class="nav-link">
+                                <i class="fas fa-search fa-fw nav-icon"></i>
+                                <p>Withdrawal</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../../index.html" class="nav-link">
+                                <i class="fas fa-search fa-fw nav-icon"></i>
+                                <p>Transfer</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>
