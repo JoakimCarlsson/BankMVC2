@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Bank.Core.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Bank.Core.Model;
 
-namespace Bank.Web.Data
+namespace Bank.Core.Data
 {
     public partial class ApplicationDbContext : IdentityDbContext
     {
