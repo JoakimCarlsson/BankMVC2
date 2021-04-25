@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bank.Core;
 using Bank.Core.Data;
+using Bank.Core.Services.CustomerServ;
 using Bank.Core.Services.Home;
 
 namespace Bank.Web
@@ -33,9 +34,9 @@ namespace Bank.Web
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddTransient<IHomeService, HomeService>();
             services.AddCoreServices(); //bank.core
-
+            services.AddTransient<IHomeService, HomeService>();
+            services.AddTransient<ICustomerService, CustomerService>();
             services.AddResponseCaching();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
