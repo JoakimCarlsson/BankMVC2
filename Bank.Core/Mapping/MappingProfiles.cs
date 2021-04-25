@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Bank.Core.Model;
-using Bank.Core.ViewModels.CustomerVm;
+using Bank.Core.ViewModels.Customers;
 
 namespace Bank.Core.Mapping
 {

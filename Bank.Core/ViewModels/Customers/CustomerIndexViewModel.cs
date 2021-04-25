@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Bank.Core.ViewModels.CustomerVm
+namespace Bank.Core.ViewModels.Customers
 {
     public class CustomerIndexViewModel
     {
@@ -34,5 +30,6 @@ namespace Bank.Core.ViewModels.CustomerVm
         public string Telephonenumber { get; set; }
         [DisplayName("Email Address")]
         public string Emailaddress { get; set; }
+
     }
 }

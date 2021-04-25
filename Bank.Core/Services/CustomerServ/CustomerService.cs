@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using Bank.Core.Repository.CustomerRep;
-using Bank.Core.ViewModels.CustomerVm;
+using Bank.Core.ViewModels.Customers;
 
 namespace Bank.Core.Services.CustomerServ
 {

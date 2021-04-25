@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Bank.Core.ViewModels.CustomerVm;
+using Bank.Core.ViewModels.Customers;
 
 namespace Bank.Core.Services.CustomerServ
 {
