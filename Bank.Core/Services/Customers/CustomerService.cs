@@ -38,14 +38,30 @@ namespace Bank.Core.Services.Customers
 
         public async Task<CustomerSearchListViewModel> GetPagedSearchAsync(string q, int page, int pageSize)
         {
-            var pageCount =  (double)_customerRepository.ListAllAsync().Result.Count() / pageSize;
+            if (page <= 0)
+                page = 1;
 
-            var model = new CustomerSearchListViewModel{Q = q, Page = page, PageSize = pageSize, TotalPages = (int)Math.Ceiling(pageCount) };
+            var result = await _customerRepository.GetPagedResponseAsync(page, pageSize, q).ConfigureAwait(false);
+            var totalRows = await _customerRepository.GetQueryCount(q).ConfigureAwait(false);
 
-            var result = await _customerRepository.GetPagedResponseAsync(page, 50).ConfigureAwait(false);
-            model.Customers = _mapper.Map<IEnumerable<CustomerSearchViewModel>>(result);
-            //var pageCount = (double)totalRowCount / pageSize;
-            //viewModel.TotalPages = (int)Math.Ceiling(pageCount);
+            var pageCount = (double) totalRows / pageSize;
+            var currentRowCount = ((page - 1) * pageSize) + 1;
+            var rowCount = currentRowCount + result.Count() - 1;
+
+            var model = new CustomerSearchListViewModel
+            {
+                PagingViewModel = new PagingViewModel
+                {
+                    Page = page,
+                    Q = q,
+                    PageSize = pageSize,
+                    MaxRowCount = totalRows,
+                    TotalPages = (int) Math.Ceiling(pageCount),
+                    CurrentRowCount = currentRowCount,
+                    RowCount = rowCount
+                },
+                Customers = _mapper.Map<IEnumerable<CustomerSearchViewModel>>(result)
+            };
 
             return model;
         }

@@ -45,9 +45,9 @@ namespace Bank.Core.Repository.Base
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetPagedResponseAsync(int page, int size) //virtual
+        public Task<IQueryable<T>> GetPagedResponseAsync(int page, int size) //virtual
         {
-            return await _dbContext.Set<T>().Skip((page - 1) * size).Take(size).AsNoTracking().ToListAsync();
+            return Task.FromResult(_dbContext.Set<T>().Skip((page - 1) * size).Take(size).AsNoTracking().AsQueryable());
         }
     }
 }

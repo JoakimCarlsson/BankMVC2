@@ -11,6 +11,6 @@ namespace Bank.Core.Repository.Base
         Task<T> AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
-        Task<IEnumerable<T>> GetPagedResponseAsync(int page, int size); //IReadOnlyList
+        Task<IQueryable<T>> GetPagedResponseAsync(int page, int size); //IReadOnlyList
     }
 }
