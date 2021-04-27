@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bank.Core.Services.Transactions;
+using Bank.Core.Validators;
+using Bank.Core.ViewModels.Transactions;
+using FluentValidation.Results;
 
 namespace Bank.Web.Controllers
 {
@@ -24,13 +27,23 @@ namespace Bank.Web.Controllers
 
         public async Task<PartialViewResult> SingleTransactionPartial(int accountId, int skip)
         {
-            var viewModel = await _transactionService.GetAmountByIdAsync(accountId, skip, 20);
+            var viewModel = await _transactionService.GetAmountByIdAsync(accountId, skip, 20).ConfigureAwait(false);
             return PartialView("Transactions/_TransactionDetailsTableBody", viewModel);
         }
 
         public IActionResult Deposit()
         {
-            return View();
+            var model = new DepositViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Deposit(DepositViewModel model)
+        {
+            if (ModelState.IsValid)
+                await _transactionService.SaveDeposit(model).ConfigureAwait(false);
+            
+            return View(model);
         }
 
         public IActionResult Withdraw()

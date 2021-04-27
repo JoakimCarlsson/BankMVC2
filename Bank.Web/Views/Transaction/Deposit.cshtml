@@ -1,3 +1,60 @@
-﻿@{
+﻿@model Bank.Core.ViewModels.Transactions.DepositViewModel
+
+@{
     ViewBag.Title = "Deposit";
 }
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Deposit</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="col-md-6">
+    <form asp-controller="Transaction" , asp-action="Deposit" method="post">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title">Deposit To Account</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Account ID</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input type="text" class="form-control" asp-for="AccountId">
+                        <span asp-validation-for="AccountId" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Amount</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-money-bill-alt"></i></span>
+                        </div>
+                        <input type="text" class="form-control" asp-for="Amount">
+                        <span asp-validation-for="Amount" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+                @*<div class="form-group">
+                    <label>Date</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                        <input id="datepicker" type="text" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" asp-for="Date" />
+                        <span asp-validation-for="Date" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>*@
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-secondary">Deposit</button>
+            </div>
+        </div>
+    </form>
+</div>

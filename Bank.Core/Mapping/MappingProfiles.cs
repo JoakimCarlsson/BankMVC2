@@ -14,6 +14,7 @@ namespace Bank.Core.Mapping
             CreateMap<Customer, CustomerSearchViewModel>().ReverseMap();
             CreateMap<Account, AccountCustomerViewModel>().ReverseMap();
             CreateMap<Transaction, TransactionDetailsViewModel>().ReverseMap();
+            CreateMap<DepositViewModel, Transaction>();
         }
     }
 }

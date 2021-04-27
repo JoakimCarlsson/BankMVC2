@@ -17,6 +17,7 @@ using Bank.Core.Data;
 using Bank.Core.Services.Customers;
 using Bank.Core.Services.Home;
 using Bank.Core.Services.Transactions;
+using FluentValidation.AspNetCore;
 
 namespace Bank.Web
 {
@@ -34,7 +35,6 @@ namespace Bank.Web
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-
             services.AddCoreServices(); //bank.core
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<ICustomerService, CustomerService>();
@@ -42,7 +42,7 @@ namespace Bank.Web
             services.AddResponseCaching();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddFluentValidation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
