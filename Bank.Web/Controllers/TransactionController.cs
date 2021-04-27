@@ -18,7 +18,7 @@ namespace Bank.Web.Controllers
 
         public async Task<IActionResult> TransactionDetails(int accountId)
         {
-            var model = await _transactionService.GetAmountByIdAsync(accountId, 0, 20);
+            var model = await _transactionService.GetAmountByIdAsync(accountId, 0, 20).ConfigureAwait(false);
             return View(model);
         }
 
@@ -26,6 +26,21 @@ namespace Bank.Web.Controllers
         {
             var viewModel = await _transactionService.GetAmountByIdAsync(accountId, skip, 20);
             return PartialView("Transactions/_TransactionDetailsTableBody", viewModel);
+        }
+
+        public IActionResult Deposit()
+        {
+            return View();
+        }
+
+        public IActionResult Withdraw()
+        {
+            return View();
+        }
+
+        public IActionResult Transfer()
+        {
+            return View();
         }
     }
 }

@@ -14,7 +14,7 @@
         </div>
         @if (SignInManager.IsSignedIn(User))
         {
-            <form class="form-inline" asp-controller="Customer", asp-action="CustomerDetails" method="post">
+            <form class="form-inline" asp-controller="Customer" , asp-action="CustomerDetails" method="post">
                 <div class="input-group">
                     <input class="form-control form-control-sidebar" type="number" placeholder="Get Customer" aria-label="Search" name="id">
                     <div class="input-group-append">
@@ -24,62 +24,68 @@
                     </div>
                 </div>
             </form>
+
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home nav-icon"></i> Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-users nav-icon"></i>
+                            <p>
+                                Customers
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-controller="Customer" asp-action="Search" class="nav-link">
+                                    <i class="fas fa-search fa-fw nav-icon"></i>
+                                    <p>Search</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Customer" asp-action="Search" class="nav-link">
+                                    <i class="fas fa-users-cog nav-icon"></i>
+                                    <p>Administrate Users</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-file-invoice nav-icon"></i>
+                            <p>
+                                Transactions
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-controller="Transaction" asp-action="Deposit" class="nav-link">
+                                    <i class="fas fa-search fa-fw nav-icon"></i>
+                                    <p>Deposit</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Transaction" asp-action="Withdraw" class="nav-link">
+                                    <i class="fas fa-search fa-fw nav-icon"></i>
+                                    <p>Withdrawal</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Transaction" asp-action="Transfer" class="nav-link">
+                                    <i class="fas fa-search fa-fw nav-icon"></i>
+                                    <p>Transfer</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
         }
-
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home nav-icon"></i> Home</a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-users nav-icon"></i>
-                        <p>
-                            Customers
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Customer" asp-action="Search" class="nav-link">
-                                <i class="fas fa-search fa-fw nav-icon"></i>
-                                <p>Search</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-file-invoice nav-icon"></i>
-                        <p>
-                            Transactions
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="../../index.html" class="nav-link">
-                                <i class="fas fa-search fa-fw nav-icon"></i>
-                                <p>Deposit</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../../index.html" class="nav-link">
-                                <i class="fas fa-search fa-fw nav-icon"></i>
-                                <p>Withdrawal</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../../index.html" class="nav-link">
-                                <i class="fas fa-search fa-fw nav-icon"></i>
-                                <p>Transfer</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
     </div>
 </aside>
