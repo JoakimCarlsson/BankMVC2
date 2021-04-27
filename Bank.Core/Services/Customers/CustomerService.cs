@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -28,16 +29,30 @@ namespace Bank.Core.Services.Customers
 
         public async Task<CustomerDetailsViewModel> GetByIdAsync(int id)
         {
-            var result = await _customerRepository.GetByIdAsync(id);
+            var result = await _customerRepository.GetByIdAsync(id).ConfigureAwait(false);
             var model = _mapper.Map<CustomerDetailsViewModel>(result);
-            model.Accounts = await GetAccountsAsync(model);
+            model.Accounts = await GetAccountsAsync(model).ConfigureAwait(false);
+
+            return model;
+        }
+
+        public async Task<CustomerSearchListViewModel> GetPagedSearchAsync(string q, int page, int pageSize)
+        {
+            var pageCount =  (double)_customerRepository.ListAllAsync().Result.Count() / pageSize;
+
+            var model = new CustomerSearchListViewModel{Q = q, Page = page, PageSize = pageSize, TotalPages = (int)Math.Ceiling(pageCount) };
+
+            var result = await _customerRepository.GetPagedResponseAsync(page, 50).ConfigureAwait(false);
+            model.Customers = _mapper.Map<IEnumerable<CustomerSearchViewModel>>(result);
+            //var pageCount = (double)totalRowCount / pageSize;
+            //viewModel.TotalPages = (int)Math.Ceiling(pageCount);
 
             return model;
         }
 
         private async Task<IEnumerable<AccountCustomerViewModel>> GetAccountsAsync(CustomerDetailsViewModel model)
         {
-            var result = await _dispositionRepository.ListAllByCustomerIdAsync(model.CustomerId);
+            var result = await _dispositionRepository.ListAllByCustomerIdAsync(model.CustomerId).ConfigureAwait(false);
             return _mapper.Map<IEnumerable<AccountCustomerViewModel>>(result.Select(i => i.Account));
         }
     }

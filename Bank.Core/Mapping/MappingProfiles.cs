@@ -11,6 +11,7 @@ namespace Bank.Core.Mapping
         public MappingProfiles()
         {
             CreateMap<Customer, CustomerDetailsViewModel>().ReverseMap();
+            CreateMap<Customer, CustomerSearchViewModel>().ReverseMap();
             CreateMap<Account, AccountCustomerViewModel>().ReverseMap();
             CreateMap<Transaction, TransactionDetailsViewModel>().ReverseMap();
         }

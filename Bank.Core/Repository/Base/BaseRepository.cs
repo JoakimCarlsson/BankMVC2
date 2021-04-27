@@ -21,9 +21,9 @@ namespace Bank.Core.Repository.Base
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<IEnumerable<T>> ListAllAsync()
+        public Task<IQueryable<T>> ListAllAsync()
         {
-            return await _dbContext.Set<T>().ToListAsync();
+            return Task.FromResult(_dbContext.Set<T>().AsQueryable());
         }
 
         public async Task<T> AddAsync(T entity)

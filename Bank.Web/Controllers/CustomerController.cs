@@ -17,10 +17,16 @@ namespace Bank.Web.Controllers
 
         public async Task<IActionResult> CustomerDetails(int id)
         {
-            var model = await _customerService.GetByIdAsync(id);
+            var model = await _customerService.GetByIdAsync(id).ConfigureAwait(false);
             if (model is null)
                 return View("_Error");
 
+            return View(model);
+        }
+
+        public async Task<IActionResult> Search(string q, int page = 1, int pageSize = 50)
+        {
+            var model = await _customerService.GetPagedSearchAsync(q, page, pageSize).ConfigureAwait(false);
             return View(model);
         }
     }
