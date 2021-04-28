@@ -31,6 +31,7 @@ namespace Bank.Core
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddTransient<IValidator<DepositViewModel>, DepositViewModelValidator>();
             services.AddTransient<IValidator<TransferViewModel>, TransferViewModelValidator>();
+            services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
             return services;
         }
     }

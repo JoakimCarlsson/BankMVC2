@@ -43,14 +43,25 @@ namespace Bank.Web.Controllers
         public async Task<IActionResult> Deposit(DepositViewModel model)
         {
             if (ModelState.IsValid)
-                await _transactionService.SaveDeposit(model).ConfigureAwait(false);
+                await _transactionService.SaveDepositAsync(model).ConfigureAwait(false);
             
             return View(model);
         }
 
         public IActionResult Withdraw()
         {
-            return View();
+            var model = new WithdrawViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Withdraw(WithdrawViewModel model)
+        {
+            if (ModelState.IsValid)
+               await _transactionService.SaveWithdrawAsync(model).ConfigureAwait(false);
+            
+            return View(model);
         }
 
         public IActionResult Transfer()
@@ -64,7 +75,7 @@ namespace Bank.Web.Controllers
         public async Task<IActionResult> Transfer(TransferViewModel model)
         {
             if (ModelState.IsValid)
-               await _transactionService.SaveTransferAsync(model).ConfigureAwait(false);
+                await _transactionService.SaveTransferAsync(model).ConfigureAwait(false);
 
             return View(model);
         }

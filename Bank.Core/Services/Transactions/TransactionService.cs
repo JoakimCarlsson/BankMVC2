@@ -47,7 +47,7 @@ namespace Bank.Core.Services.Transactions
             return model;
         }
 
-        public async Task SaveDeposit(DepositViewModel model)
+        public async Task SaveDepositAsync(DepositViewModel model)
         {
             var newTransaction = _mapper.Map<Transaction>(model);
             var account = await _accountRepository.GetByIdAsync(newTransaction.AccountId).ConfigureAwait(false);
@@ -88,10 +88,29 @@ namespace Bank.Core.Services.Transactions
                 Balance = toAccount.Balance += model.Amount,
             };
 
-            await _accountRepository.UpdateAsync(fromAccount).ConfigureAwait(true);
-            await _accountRepository.UpdateAsync(toAccount).ConfigureAwait(true);
-            await _transactionRepository.AddAsync(fromTransaction).ConfigureAwait(true);
-            await _transactionRepository.AddAsync(toTransaction).ConfigureAwait(true);
+            await _accountRepository.UpdateAsync(fromAccount).ConfigureAwait(false);
+            await _accountRepository.UpdateAsync(toAccount).ConfigureAwait(false);
+            await _transactionRepository.AddAsync(fromTransaction).ConfigureAwait(false);
+            await _transactionRepository.AddAsync(toTransaction).ConfigureAwait(false);
+        }
+
+        public async Task SaveWithdrawAsync(WithdrawViewModel model)
+        {
+            var transaction = new Transaction();
+            var account = await _accountRepository.GetByIdAsync(model.AccountId).ConfigureAwait(false);
+
+            var balance = account.Balance - model.Amount;
+            transaction.Balance = balance;
+            transaction.Operation = "Withdraw";
+            transaction.Type = "Credit";
+            transaction.Date = DateTime.Now;
+            transaction.Amount = -model.Amount;
+            transaction.AccountId = model.AccountId;
+
+            account.Balance -= -transaction.Amount;
+
+            await _accountRepository.UpdateAsync(account).ConfigureAwait(false);
+            await _transactionRepository.AddAsync(transaction).ConfigureAwait(false);
         }
     }
 }

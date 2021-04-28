@@ -1,3 +1,50 @@
-﻿@{
+﻿@model Bank.Core.ViewModels.Transactions.WithdrawViewModel
+
+@{
     ViewBag.Title = "Transaction Details";
 }
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Withdraw</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="col-md-6">
+    <form asp-controller="Transaction" , asp-action="Withdraw" method="post">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title">Withdraw from account</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Account ID</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input type="text" class="form-control" asp-for="AccountId">
+                        <span asp-validation-for="AccountId" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Amount</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-money-bill-alt"></i></span>
+                        </div>
+                        <input type="text" class="form-control" asp-for="Amount">
+                        <span asp-validation-for="Amount" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-secondary">Withdraw</button>
+            </div>
+        </div>
+    </form>
+</div>
