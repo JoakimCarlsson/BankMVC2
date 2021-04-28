@@ -7,10 +7,12 @@ using Bank.Core.Services.Transactions;
 using Bank.Core.Validators;
 using Bank.Core.ViewModels.Transactions;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bank.Web.Controllers
 {
+    [Authorize(Roles = "Admin, Cashier")]
     public class TransactionController : Controller
     {
         private readonly ITransactionService _transactionService;

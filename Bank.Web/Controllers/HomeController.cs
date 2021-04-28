@@ -5,9 +5,11 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Bank.Core.Models;
 using Bank.Core.Repository.TranasctionsRep;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bank.Web.Controllers
 {
+    [Authorize(Roles = "Admin, Cashier")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

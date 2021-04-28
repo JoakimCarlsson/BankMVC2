@@ -47,7 +47,6 @@ namespace Bank.Core.Services.Transactions
                     .Take(take).ToListAsync().ConfigureAwait(false)),
                 AccountId = accountId
             };
-
             return model;
         }
 
