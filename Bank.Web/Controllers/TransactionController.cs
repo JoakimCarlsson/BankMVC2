@@ -7,6 +7,7 @@ using Bank.Core.Services.Transactions;
 using Bank.Core.Validators;
 using Bank.Core.ViewModels.Transactions;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bank.Web.Controllers
 {
@@ -38,6 +39,7 @@ namespace Bank.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Deposit(DepositViewModel model)
         {
             if (ModelState.IsValid)
@@ -53,7 +55,18 @@ namespace Bank.Web.Controllers
 
         public IActionResult Transfer()
         {
-            return View();
+            var model = new TransferViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Transfer(TransferViewModel model)
+        {
+            if (ModelState.IsValid)
+               await _transactionService.SaveTransferAsync(model).ConfigureAwait(false);
+
+            return View(model);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Bank.Web
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddCoreServices(); //bank.core
+            services.AddCoreServices(Configuration); //bank.core
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<ITransactionService, TransactionService>();

@@ -18,7 +18,7 @@ namespace Bank.Core.Repository.Base
 
         public async Task<T> GetByIdAsync(int id) //virtual
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            return await _dbContext.Set<T>().FindAsync(id).ConfigureAwait(false);
         }
 
         public Task<IQueryable<T>> ListAllAsync()
@@ -36,8 +36,16 @@ namespace Bank.Core.Repository.Base
 
         public async Task UpdateAsync(T entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+            try
+            {
+                _dbContext.Entry(entity).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task DeleteAsync(T entity)
