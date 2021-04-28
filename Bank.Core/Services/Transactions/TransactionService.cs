@@ -40,7 +40,11 @@ namespace Bank.Core.Services.Transactions
         {
             var model = new TransactionDetailsListViewModel
             {
-                Transactions = _mapper.Map<IEnumerable<TransactionDetailsViewModel>>(await _transactionRepository.ListAllByAccountIdAsync(accountId).Result.OrderByDescending(i => i.Date).Skip(skip).Take(take).ToListAsync()),
+                Transactions = _mapper.Map<IEnumerable<TransactionDetailsViewModel>>(await _transactionRepository.ListAllByAccountIdAsync(accountId).Result
+                    .OrderByDescending(i => i.Date)
+                    .ThenByDescending(i => i.TransactionId)
+                    .Skip(skip)
+                    .Take(take).ToListAsync().ConfigureAwait(false)),
                 AccountId = accountId
             };
 
