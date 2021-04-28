@@ -57,21 +57,7 @@
             </table>
         </div>
         <div class="card-footer clearfix">
-            <ul class="pagination pagination-sm m-0 float-right">
-                <li>
-                    @Model.PagingViewModel.CurrentRowCount-@Model.PagingViewModel.RowCount of @Model.PagingViewModel.MaxRowCount
-                </li>
-                <li class="page-item @(Model.PagingViewModel.Page == 1 ? "disabled" : "")" style="padding-left:1em">
-                    <a asp-controller="Customer" asp-action="Search" asp-route-page="@(Model.PagingViewModel.Page - 1)" asp-route-q="@Model.PagingViewModel.Q">
-                        <i class="fas fa-chevron-left fa-2x"></i>
-                    </a>
-                </li>
-                <li class="page-item @(Model.PagingViewModel.Page == Model.PagingViewModel.TotalPages  ? "disabled" : "")" style="padding-left:1em">
-                    <a asp-controller="Customer" asp-action="Search" asp-route-page="@(Model.PagingViewModel.Page + 1)" asp-route-q="@Model.PagingViewModel.Q">
-                        <i class="fas fa-chevron-right fa-2x"></i>
-                    </a>
-                </li>
-            </ul>
+            <partial name="_PagingButtons" model="@Model.PagingViewModel" />
         </div>
     </div>
 </div>

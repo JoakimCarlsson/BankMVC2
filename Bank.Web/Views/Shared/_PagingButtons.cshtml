@@ -1,0 +1,17 @@
+﻿@model Bank.Core.ViewModels.Customers.PagingViewModel
+
+<ul class="pagination pagination-sm m-0 float-right">
+    <li>
+        @Model.CurrentRowCount-@Model.RowCount of @Model.MaxRowCount
+    </li>
+    <li class="page-item @(Model.Page == 1 ? "disabled" : "")" style="padding-left:1em">
+        <a asp-controller="Customer" asp-action="Search" asp-route-page="@(Model.Page - 1)" asp-route-q="@Model.Q">
+            <i class="fas fa-chevron-left fa-2x"></i>
+        </a>
+    </li>
+    <li class="page-item @(Model.Page == Model.TotalPages  ? "disabled" : "")" style="padding-left:1em">
+        <a asp-controller="Customer" asp-action="Search" asp-route-page="@(Model.Page + 1)" asp-route-q="@Model.Q">
+            <i class="fas fa-chevron-right fa-2x"></i>
+        </a>
+    </li>
+</ul>
