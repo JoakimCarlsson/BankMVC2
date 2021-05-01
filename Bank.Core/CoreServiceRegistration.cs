@@ -32,6 +32,12 @@ namespace Bank.Core
             services.AddTransient<IValidator<DepositViewModel>, DepositViewModelValidator>();
             services.AddTransient<IValidator<TransferViewModel>, TransferViewModelValidator>();
             services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
+
+            //Startup.cs
+            //services.AddControllersWithViews().AddFluentValidation(s =>
+            //{
+            //    s.RegisterValidatorsFromAssemblyContaining<Startup>();
+            //});
             return services;
         }
     }
