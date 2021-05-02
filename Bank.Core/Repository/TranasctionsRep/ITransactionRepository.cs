@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Bank.Core.Model;
 using Bank.Core.Repository.Base;
 
-namespace Bank.Core.Repository.TranasctionsRep
+namespace Bank.Core.Repository.TranasctionsRep //todo fix me
 {
     public interface ITransactionRepository : IAsyncRepository<Transaction>
     {

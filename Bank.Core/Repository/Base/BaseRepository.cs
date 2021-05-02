@@ -36,21 +36,14 @@ namespace Bank.Core.Repository.Base
 
         public async Task UpdateAsync(T entity)
         {
-            try
-            {
-                _dbContext.Entry(entity).State = EntityState.Modified;
-                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.Remove(entity);
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         }
 
