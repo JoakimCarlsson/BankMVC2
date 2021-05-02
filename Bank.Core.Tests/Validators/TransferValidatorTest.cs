@@ -1,13 +1,11 @@
-﻿using AutoMapper;
-using Bank.Core.Model;
+﻿using Bank.Core.Model;
 using Bank.Core.Repository.AccountRep;
-using Bank.Core.Repository.TranasctionsRep;
 using Bank.Core.Validators.Transfer;
 using Bank.Core.ViewModels.Transactions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Bank.Core.Tests.Validators.Transfer
+namespace Bank.Core.Tests.Validators
 {
     [TestClass]
     public class TransferValidatorTest
