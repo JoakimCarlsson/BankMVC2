@@ -27,9 +27,13 @@ namespace Bank.Core.Services.Customers
             _mapper = mapper;
         }
 
+        //todo fix me pliz
         public async Task<CustomerDetailsViewModel> GetByIdAsync(int id)
         {
             var result = await _customerRepository.GetByIdAsync(id).ConfigureAwait(false);
+            if (result == null)
+                return null;
+            
             var model = _mapper.Map<CustomerDetailsViewModel>(result);
             model.Accounts = await GetAccountsAsync(model).ConfigureAwait(false);
 
