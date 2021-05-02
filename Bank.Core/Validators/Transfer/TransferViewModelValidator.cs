@@ -10,7 +10,7 @@ using FluentValidation;
 
 namespace Bank.Core.Validators.Transfer
 {
-    class TransferViewModelValidator : AbstractValidator<TransferViewModel>
+    public class TransferViewModelValidator : AbstractValidator<TransferViewModel>
     {
         private readonly IAccountRepository _accountRepository;
 
@@ -39,6 +39,7 @@ namespace Bank.Core.Validators.Transfer
                 .MustAsync(HaveCoverage).WithMessage("The account does not have enough money to do this transaction");
         }
 
+        //todo refactor me
         private async Task<bool> HaveCoverage(TransferViewModel model, decimal amount, CancellationToken token)
         {
             if (await AccountIdExists(model.FromAccountId, new CancellationToken(false)))

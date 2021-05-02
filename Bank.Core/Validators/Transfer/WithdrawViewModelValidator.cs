@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Bank.Core.Repository.AccountRep;
+﻿using Bank.Core.Repository.AccountRep;
 using Bank.Core.ViewModels.Transactions;
 using FluentValidation;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Bank.Core.Validators.Transfer
 {
-    class WithdrawViewModelValidator : AbstractValidator<WithdrawViewModel>
+    public class WithdrawViewModelValidator : AbstractValidator<WithdrawViewModel>
     {
         private readonly IAccountRepository _accountRepository;
 
@@ -22,15 +18,16 @@ namespace Bank.Core.Validators.Transfer
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MustAsync(AccountIdExists).WithMessage("{PropertyName} does not exist.");
-                
+
 
             RuleFor(a => a.Amount)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .GreaterThan(0).WithMessage("{PropertyName} can't be less or equal to 0.")
-                .MustAsync(HaveCoverage).WithMessage("The account does not have enough money to do this transaction"); ;
+                .MustAsync(HaveCoverage).WithMessage("The account does not have enough money to do this transaction");
         }
 
+        //TODO, refactor me.
         private async Task<bool> AccountIdExists(int id, CancellationToken token)
         {
             var account = await _accountRepository.GetByIdAsync(id).ConfigureAwait(false);
