@@ -6,7 +6,7 @@ using Bank.Core.ViewModels.Transactions;
 
 namespace Bank.Core.Mapping
 {
-    class MappingProfiles : Profile
+    public class MappingProfiles : Profile
     {
         public MappingProfiles()
         {
