@@ -38,7 +38,7 @@ namespace Bank.Core.Tests.Validators.Transfer
                 Amount = amount,
             };
 
-            _accountRepository.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(_account);
+            _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
             
             //act
             var sut = new WithdrawViewModelValidator(_accountRepository.Object);
@@ -63,10 +63,29 @@ namespace Bank.Core.Tests.Validators.Transfer
                 Amount = amount,
             };
 
-            _accountRepository.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(_account);
+            _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
             _accountRepository.Setup(x => x.GetByIdAsync(toAccount.AccountId)).ReturnsAsync(toAccount);
 
             //act
+            var sut = new TransferViewModelValidator(_accountRepository.Object);
+            var expected = sut.Validate(model).IsValid;
+
+            //assert
+            Assert.IsFalse(expected);
+        }
+
+        [TestMethod]
+        public void ShouldNotBePossibleToTransferMoneyToTheSameAccount()
+        {
+            TransferViewModel model = new TransferViewModel
+            {
+                FromAccountId = _account.AccountId,
+                ToAccountId = _account.AccountId,
+                Amount = 500,
+            };
+
+            _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
+
             var sut = new TransferViewModelValidator(_accountRepository.Object);
             var expected = sut.Validate(model).IsValid;
 
@@ -85,12 +104,13 @@ namespace Bank.Core.Tests.Validators.Transfer
                 AccountId = _account.AccountId,
                 Amount = amount,
             };
-            _accountRepository.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(_account);
+            _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
 
             //act
             var sut = new WithdrawViewModelValidator(_accountRepository.Object);
             var expected = sut.Validate(model).IsValid;
 
+            //assert
             Assert.IsFalse(expected);
         }
 
@@ -105,13 +125,81 @@ namespace Bank.Core.Tests.Validators.Transfer
                 AccountId = _account.AccountId,
                 Amount = amount,
             };
-            _accountRepository.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(_account);
+
+            _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
 
             //act
             var sut = new DepositViewModelValidator(_accountRepository.Object);
             var expected = sut.Validate(model).IsValid;
 
+            //assert
             Assert.IsFalse(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(1337)]
+        public void ShouldBePossibleToDepositIfAmountIsCorrectAndAccountIdExist(int amount)
+        {
+            //Arrange
+            DepositViewModel model = new DepositViewModel
+            {
+                AccountId = _account.AccountId,
+                Amount = amount,
+            };
+
+            _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
+
+            //Act
+            var sut = new DepositViewModelValidator(_accountRepository.Object);
+            var expected = sut.Validate(model).IsValid;
+
+            //Assert
+            Assert.IsTrue(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(500)]
+        public void ShouldBePossibleToWithdrawIfAmountIsCorrectAndAccountIdExist(int amount)
+        {
+            //Arrange
+            WithdrawViewModel model = new WithdrawViewModel
+            {
+                AccountId = _account.AccountId,
+                Amount = amount,
+            };
+            _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
+
+            //Act
+            var sut = new WithdrawViewModelValidator(_accountRepository.Object);
+            var expected = sut.Validate(model).IsValid;
+
+            //Assert
+            Assert.IsTrue(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(500)]
+        public void ShouldBePossibleToTransferIfAmountIsCorrectAndAccountIdsExist(int amount)
+        {
+            //Arrange
+            var toAccount = new Account { AccountId = 5 };
+
+            TransferViewModel model = new TransferViewModel
+            {
+                FromAccountId = _account.AccountId,
+                ToAccountId = toAccount.AccountId,
+                Amount = amount,
+            };
+
+            _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
+            _accountRepository.Setup(x => x.GetByIdAsync(toAccount.AccountId)).ReturnsAsync(toAccount);
+
+            //Act
+            var sut = new TransferViewModelValidator(_accountRepository.Object);
+            var expected = sut.Validate(model).IsValid;
+
+            //Assert
+            Assert.IsTrue(expected);
         }
     }
 }
