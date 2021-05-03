@@ -33,12 +33,13 @@ namespace Bank.Core.Tests.Repositories
                 .Without(i => i.TransactionId)
                 .Without(i => i.AccountNavigation).CreateMany<Transaction>(5);
 
-            //Act
             await context.AddRangeAsync(transactions).ConfigureAwait(false);
-            var expected = await sut.ListAllByAccountIdAsync(1).ConfigureAwait(false);
+
+            //Act
+            var actual = await sut.ListAllByAccountIdAsync(1).ConfigureAwait(false);
 
             //Assert
-            expected.ShouldBe(context.Transactions.Where(i => i.AccountId == 1));
+            actual.ShouldBe(context.Transactions.Where(i => i.AccountId == 1));
         }
 
         [TestMethod]
@@ -61,7 +62,7 @@ namespace Bank.Core.Tests.Repositories
             var actual = await sut.AddAsync(tranasction).ConfigureAwait(false);
             var expected = await context.Transactions.FirstOrDefaultAsync(i => i.TransactionId == actual.TransactionId).ConfigureAwait(false);
             //Assert
-            expected.ShouldBe(actual);
+            actual.ShouldBe(expected);
         }   
 
         [TestMethod]
@@ -70,16 +71,16 @@ namespace Bank.Core.Tests.Repositories
             //Arrange
             var context = CreateDbContext();
             ITransactionRepository sut = new TransactionRepository(context);
-            var actual = await context.Transactions.FirstOrDefaultAsync().ConfigureAwait(false);
-            actual.Balance = 5000;
+            var expected = await context.Transactions.FirstOrDefaultAsync().ConfigureAwait(false);
+            expected.Balance = 5000;
 
             //Act
-            await sut.UpdateAsync(actual).ConfigureAwait(false);
-            var expected = context.Transactions.First(i => i.TransactionId == actual.TransactionId);
-            
+            await sut.UpdateAsync(expected).ConfigureAwait(false);
+            var actual = context.Transactions.First(i => i.TransactionId == expected.TransactionId);
+
             //Assert
 
-            expected.ShouldBe(actual);
+            actual.ShouldBe(expected);
         }
 
         [TestMethod]
@@ -98,7 +99,8 @@ namespace Bank.Core.Tests.Repositories
             var actual = await sut.GetByIdAsync(expected.TransactionId).ConfigureAwait(false);
 
             //Assert
-            expected.ShouldBe(actual);
+            actual.ShouldBe(expected);
+
         }
 
         [TestMethod]
@@ -127,7 +129,7 @@ namespace Bank.Core.Tests.Repositories
             var actual = await sut.ListAllAsync().ConfigureAwait(false);
 
             //Assert
-            context.Transactions.ShouldBeEquivalentTo(actual);
+            actual.ShouldBeEquivalentTo(context.Transactions);
         }
 
         [TestMethod]
@@ -144,10 +146,10 @@ namespace Bank.Core.Tests.Repositories
 
             //Act
             await sut.DeleteAsync(transaction).ConfigureAwait(false);
-            var expected = context.Transactions.FirstOrDefault(i => i.TransactionId == transaction.TransactionId);
+            var actual = context.Transactions.FirstOrDefault(i => i.TransactionId == transaction.TransactionId);
 
             //Assert
-            expected.ShouldBeNull();
+            actual.ShouldBeNull();
         }
 
         private ApplicationDbContext CreateDbContext()
