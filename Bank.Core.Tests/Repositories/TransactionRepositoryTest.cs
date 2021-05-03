@@ -19,22 +19,67 @@ namespace Bank.Core.Tests.Repositories
     [TestClass]
     public class TransactionRepositoryTest
     {
-        [TestInitialize]
-        public void TestInitialize()
+        [TestMethod]
+        public async Task ListAllByAccountIdShouldReturnTransactionsWithTheRightId()
         {
-        }
-
-        private ApplicationDbContext CreateDbContext()
-        {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-            var dbContext = new ApplicationDbContext(options);
-
+            //Arrange
+            var context = CreateDbContext();
+            ITransactionRepository sut = new TransactionRepository(context);
             var fixture = new Fixture();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
-            dbContext.AddRange(fixture.CreateMany<Transaction>(20));
-            dbContext.SaveChanges();
 
-            return dbContext;
+            var transactions = fixture.Build<Transaction>()
+                .With(x => x.AccountId, 1)
+                .Without(i => i.TransactionId)
+                .Without(i => i.AccountNavigation).CreateMany<Transaction>(5);
+
+            //Act
+            await context.AddRangeAsync(transactions).ConfigureAwait(false);
+            var expected = await sut.ListAllByAccountIdAsync(1).ConfigureAwait(false);
+
+            //Assert
+            expected.ShouldBe(context.Transactions.Where(i => i.AccountId == 1));
+        }
+
+        [TestMethod]
+        public async Task AddAsyncShouldAddValidEntity()
+        {
+            //Arrange
+            var context = CreateDbContext();
+            ITransactionRepository sut = new TransactionRepository(context);
+            var tranasction = new Transaction
+            {
+                AccountId = 1,
+                Date = DateTime.Now,
+                Type = "Credit",
+                Operation = "Credit In Cash",
+                Amount = 700,
+                Balance = 700,
+                Symbol = "old-age pension"
+            };
+            //Act
+            var actual = await sut.AddAsync(tranasction).ConfigureAwait(false);
+            var expected = await context.Transactions.FirstOrDefaultAsync(i => i.TransactionId == actual.TransactionId).ConfigureAwait(false);
+            //Assert
+            expected.ShouldBe(actual);
+        }   
+
+        [TestMethod]
+        public async Task UpdateAsyncShouldUpdateEntity()
+        {
+            //Arrange
+            var context = CreateDbContext();
+            ITransactionRepository sut = new TransactionRepository(context);
+            var actual = await context.Transactions.FirstOrDefaultAsync().ConfigureAwait(false);
+            actual.Balance = 5000;
+
+            //Act
+            await sut.UpdateAsync(actual).ConfigureAwait(false);
+            var expected = context.Transactions.First(i => i.TransactionId == actual.TransactionId);
+            
+            //Assert
+
+            expected.ShouldBe(actual);
         }
 
         [TestMethod]
@@ -105,22 +150,17 @@ namespace Bank.Core.Tests.Repositories
             expected.ShouldBeNull();
         }
 
-        //[TestMethod]
-        //public async Task AddAsyncShouldReturnAValidEntity()
-        //{
-        //    //Arrange
-        //    var context = CreateDbContext();
-        //    ITransactionRepository sut = new TransactionRepository(context);
+        private ApplicationDbContext CreateDbContext()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var dbContext = new ApplicationDbContext(options);
 
-        //    var fixture = new Fixture();
-        //    fixture.Behaviors.Add(new OmitOnRecursionBehavior());
-        //    var expected = fixture.Build<Transaction>().Without(p => p.TransactionId).Create();
+            var fixture = new Fixture();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            dbContext.AddRange(fixture.CreateMany<Transaction>(20));
+            dbContext.SaveChanges();
 
-        //    //Act
-        //    var actual = await sut.AddAsync(expected).ConfigureAwait(false);
-
-        //    //Assert
-        //    expected.ShouldBeEquivalentTo(actual);
-        //}
+            return dbContext;
+        }
     }
 }
