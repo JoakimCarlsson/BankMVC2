@@ -1,5 +1,5 @@
-﻿using Bank.Core.Repository.AccountRep;
-using Bank.Core.ViewModels.Transactions;
+﻿using Bank.Core.ViewModels.Transactions;
+using Bank.Data.Repositories.Account;
 using FluentValidation;
 using System.Threading;
 using System.Threading.Tasks;

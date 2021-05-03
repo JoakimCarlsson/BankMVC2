@@ -1,14 +1,13 @@
-﻿using System;
+﻿using AutoMapper;
+using Bank.Core.ViewModels.Transactions;
+using Bank.Data.Models;
+using Bank.Data.Repositories.Account;
+using Bank.Data.Repositories.Transaction;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Bank.Core.Data;
-using Bank.Core.Model;
-using Bank.Core.Repository.AccountRep;
-using Bank.Core.Repository.TranasctionsRep;
-using Bank.Core.ViewModels.Transactions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Bank.Core.Services.Transactions
 {

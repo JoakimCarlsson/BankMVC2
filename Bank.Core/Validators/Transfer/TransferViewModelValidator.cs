@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Bank.Core.ViewModels.Transactions;
+using Bank.Data.Repositories.Account;
+using FluentValidation;
 using System.Threading;
 using System.Threading.Tasks;
-using Bank.Core.Repository.AccountRep;
-using Bank.Core.ViewModels.Transactions;
-using FluentValidation;
 
 namespace Bank.Core.Validators.Transfer
 {
@@ -23,7 +19,7 @@ namespace Bank.Core.Validators.Transfer
                 .NotNull()
                 .MustAsync(AccountIdExists).WithMessage("{PropertyName} does not exist.")
                 .NotEqual(i => i.ToAccountId).WithMessage("Can't transfer money too the same account");
-                
+
 
             RuleFor(i => i.ToAccountId)
                 .NotEmpty().WithMessage("{PropertyName} is required.")

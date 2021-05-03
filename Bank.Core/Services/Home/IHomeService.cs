@@ -1,5 +1,4 @@
 ﻿using Bank.Core.ViewModels;
-using Bank.Web.Data;
 
 namespace Bank.Core.Services.Home
 {

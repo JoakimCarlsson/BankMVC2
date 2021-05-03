@@ -1,11 +1,9 @@
 ﻿using Bank.Core.Services.Home;
+using Bank.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using Bank.Core.Models;
-using Bank.Core.Repository.TranasctionsRep;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Bank.Web.Controllers
 {

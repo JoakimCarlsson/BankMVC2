@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Bank.Core.Data;
 using Bank.Core.ViewModels;
+using Bank.Data.Data;
 
 namespace Bank.Core.Services.Home
 {

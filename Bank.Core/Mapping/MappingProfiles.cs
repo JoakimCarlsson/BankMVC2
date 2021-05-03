@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Bank.Core.Model;
 using Bank.Core.ViewModels.Accounts;
 using Bank.Core.ViewModels.Customers;
 using Bank.Core.ViewModels.Transactions;
+using Bank.Data.Models;
 
 namespace Bank.Core.Mapping
 {

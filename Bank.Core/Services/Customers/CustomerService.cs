@@ -1,14 +1,13 @@
-﻿using System;
+﻿using AutoMapper;
+using Bank.Core.ViewModels.Accounts;
+using Bank.Core.ViewModels.Customers;
+using Bank.Data.Repositories.Account;
+using Bank.Data.Repositories.Customer;
+using Bank.Data.Repositories.Disposition;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Bank.Core.Model;
-using Bank.Core.Repository.AccountRep;
-using Bank.Core.Repository.CustomerRep;
-using Bank.Core.Repository.DispositionRep;
-using Bank.Core.ViewModels.Accounts;
-using Bank.Core.ViewModels.Customers;
 
 namespace Bank.Core.Services.Customers
 {
@@ -33,7 +32,7 @@ namespace Bank.Core.Services.Customers
             var result = await _customerRepository.GetByIdAsync(id).ConfigureAwait(false);
             if (result == null)
                 return null;
-            
+
             var model = _mapper.Map<CustomerDetailsViewModel>(result);
             model.Accounts = await GetAccountsAsync(model).ConfigureAwait(false);
 
@@ -48,7 +47,7 @@ namespace Bank.Core.Services.Customers
             var result = await _customerRepository.GetPagedResponseAsync(page, pageSize, q).ConfigureAwait(false);
             var totalRows = await _customerRepository.GetQueryCount(q).ConfigureAwait(false);
 
-            var pageCount = (double) totalRows / pageSize;
+            var pageCount = (double)totalRows / pageSize;
             var currentRowCount = ((page - 1) * pageSize) + 1;
             var rowCount = currentRowCount + result.Count() - 1;
 
@@ -60,7 +59,7 @@ namespace Bank.Core.Services.Customers
                     Q = q,
                     PageSize = pageSize,
                     MaxRowCount = totalRows,
-                    TotalPages = (int) Math.Ceiling(pageCount),
+                    TotalPages = (int)Math.Ceiling(pageCount),
                     CurrentRowCount = currentRowCount,
                     RowCount = rowCount
                 },
