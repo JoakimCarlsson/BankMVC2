@@ -50,7 +50,23 @@ namespace Bank.Core.Services.Transactions
             return model;
         }
 
-        public async Task SaveDepositAsync(DepositViewModel model)
+        public async Task SaveTransaction(TransactionBaseViewModel model)
+        {
+            switch (model)
+            {
+                case DepositViewModel viewModel:
+                    await SaveDepositAsync(viewModel).ConfigureAwait(false);
+                    break;
+                case TransferViewModel viewModel:
+                    await SaveTransferAsync(viewModel).ConfigureAwait(false);
+                    break;
+                case WithdrawViewModel viewModel:
+                    await SaveWithdrawAsync(viewModel).ConfigureAwait(false);
+                    break;
+            }
+        }
+
+        private async Task SaveDepositAsync(DepositViewModel model)
         {
             var newTransaction = _mapper.Map<Transaction>(model);
             var account = await _accountRepository.GetByIdAsync(newTransaction.AccountId).ConfigureAwait(false);
@@ -66,9 +82,9 @@ namespace Bank.Core.Services.Transactions
             await _transactionRepository.AddAsync(newTransaction).ConfigureAwait(false);
         }
 
-        public async Task SaveTransferAsync(TransferViewModel model)
+        private async Task SaveTransferAsync(TransferViewModel model)
         {
-            var fromAccount = await _accountRepository.GetByIdAsync(model.FromAccountId).ConfigureAwait(false);
+            var fromAccount = await _accountRepository.GetByIdAsync(model.AccountId).ConfigureAwait(false);
             var toAccount = await _accountRepository.GetByIdAsync(model.ToAccountId).ConfigureAwait(false);
 
             var fromTransaction = new Transaction
@@ -77,7 +93,7 @@ namespace Bank.Core.Services.Transactions
                 Operation = "Transfer to another account.",
                 Type = "Credit",
                 Date = DateTime.Now,
-                AccountId = model.FromAccountId,
+                AccountId = model.AccountId,
                 Balance = fromAccount.Balance -= model.Amount,
             };
 
@@ -97,7 +113,7 @@ namespace Bank.Core.Services.Transactions
             await _transactionRepository.AddAsync(toTransaction).ConfigureAwait(false);
         }
 
-        public async Task SaveWithdrawAsync(WithdrawViewModel model)
+        private async Task SaveWithdrawAsync(WithdrawViewModel model)
         {
             var transaction = new Transaction();
             var account = await _accountRepository.GetByIdAsync(model.AccountId).ConfigureAwait(false);
@@ -115,5 +131,7 @@ namespace Bank.Core.Services.Transactions
             await _accountRepository.UpdateAsync(account).ConfigureAwait(false);
             await _transactionRepository.AddAsync(transaction).ConfigureAwait(false);
         }
+
+
     }
 }

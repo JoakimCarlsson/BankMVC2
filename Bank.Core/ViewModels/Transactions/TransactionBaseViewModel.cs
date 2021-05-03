@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bank.Core.ViewModels.Transactions
 {
-    public class TransferViewModel : TransactionBaseViewModel
+    public class TransactionBaseViewModel
     {
-        public int ToAccountId { get; set; }
+        public int AccountId { get; set; }
+        public decimal Amount { get; set; }
     }
 }

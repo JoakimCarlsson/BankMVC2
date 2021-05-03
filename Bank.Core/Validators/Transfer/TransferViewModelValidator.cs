@@ -18,7 +18,7 @@ namespace Bank.Core.Validators.Transfer
         {
             _accountRepository = accountRepository;
 
-            RuleFor(i => i.FromAccountId)
+            RuleFor(i => i.AccountId)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MustAsync(AccountIdExists).WithMessage("{PropertyName} does not exist.")
@@ -29,7 +29,7 @@ namespace Bank.Core.Validators.Transfer
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .MustAsync(AccountIdExists).WithMessage("{PropertyName} does not exist.")
-                .NotEqual(i => i.FromAccountId).WithMessage("Can't transfer money too the same account"); //Not needed I guess? But better safe then sorry.
+                .NotEqual(i => i.AccountId).WithMessage("Can't transfer money too the same account"); //Not needed I guess? But better safe then sorry.
 
 
             RuleFor(i => i.Amount)
@@ -42,8 +42,8 @@ namespace Bank.Core.Validators.Transfer
         //todo refactor me
         private async Task<bool> HaveCoverage(TransferViewModel model, decimal amount, CancellationToken token)
         {
-            if (await AccountIdExists(model.FromAccountId, new CancellationToken(false)))
-                return _accountRepository.GetByIdAsync(model.FromAccountId).GetAwaiter().GetResult().Balance >= amount;
+            if (await AccountIdExists(model.AccountId, new CancellationToken(false)))
+                return _accountRepository.GetByIdAsync(model.AccountId).GetAwaiter().GetResult().Balance >= amount;
 
             return false;
         }

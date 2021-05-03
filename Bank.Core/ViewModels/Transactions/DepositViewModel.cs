@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.Core.ViewModels.Transactions
 {
-    public class DepositViewModel
+    public class DepositViewModel : TransactionBaseViewModel
     {
-        public int AccountId { get; set; }
-        public decimal Amount { get; set; }
+
     }
 }

@@ -17,7 +17,7 @@ namespace Bank.Core.Data
         public virtual DbSet<Loan> Loans { get; set; }
         public virtual DbSet<PermenentOrder> PermenentOrders { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        //public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

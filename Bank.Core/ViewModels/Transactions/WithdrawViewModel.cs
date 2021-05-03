@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bank.Core.ViewModels.Transactions
 {
-    public class WithdrawViewModel
+    public class WithdrawViewModel : TransactionBaseViewModel
     {
-        public int AccountId { get; set; }
-        public decimal Amount { get; set; }
     }
 }

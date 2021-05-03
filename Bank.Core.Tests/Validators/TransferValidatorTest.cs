@@ -56,7 +56,7 @@ namespace Bank.Core.Tests.Validators
 
             TransferViewModel model = new TransferViewModel
             {
-                FromAccountId = _account.AccountId,
+                AccountId = _account.AccountId,
                 ToAccountId = toAccount.AccountId,
                 Amount = amount,
             };
@@ -77,7 +77,7 @@ namespace Bank.Core.Tests.Validators
         {
             TransferViewModel model = new TransferViewModel
             {
-                FromAccountId = _account.AccountId,
+                AccountId = _account.AccountId,
                 ToAccountId = _account.AccountId,
                 Amount = 500,
             };
@@ -184,7 +184,7 @@ namespace Bank.Core.Tests.Validators
 
             TransferViewModel model = new TransferViewModel
             {
-                FromAccountId = _account.AccountId,
+                AccountId = _account.AccountId,
                 ToAccountId = toAccount.AccountId,
                 Amount = amount,
             };

@@ -76,7 +76,7 @@ namespace Bank.Core.Tests.Services
             //Act
             var sut = new TransactionService(_mapper, _transactionRepository.Object, _accountRepository.Object);
 
-            await sut.SaveDepositAsync(model).ConfigureAwait(false);
+            await sut.SaveTransaction(model).ConfigureAwait(false);
 
             //Assert
             _transactionRepository.Verify(x => x.AddAsync(It.IsAny<Transaction>()), Times.Once());
@@ -119,7 +119,7 @@ namespace Bank.Core.Tests.Services
 
             //Act
             var sut = new TransactionService(_mapper, _transactionRepository.Object, _accountRepository.Object);
-            await sut.SaveWithdrawAsync(model).ConfigureAwait(false);
+            await sut.SaveTransaction(model).ConfigureAwait(false);
 
             //Assert
             _transactionRepository.Verify(x => x.AddAsync(It.IsAny<Transaction>()), Times.Once());
@@ -132,7 +132,7 @@ namespace Bank.Core.Tests.Services
             actual.Operation.ShouldBeEquivalentTo("Withdraw");
             actual.Type.ShouldBeEquivalentTo("Credit");
             actual.Date.ToString().ShouldBeEquivalentTo(DateTime.Now.ToString());
-            //actual.Amount.ShouldBeEquivalentTo(model.Amount);
+            actual.Amount.ShouldBeEquivalentTo(-model.Amount);
             actual.AccountId.ShouldBeEquivalentTo(model.AccountId);
             actual.Balance.ShouldBeEquivalentTo(_account.Balance);
         }
@@ -165,14 +165,14 @@ namespace Bank.Core.Tests.Services
 
             var model = new TransferViewModel()
             {
-                FromAccountId = _account.AccountId,
+                AccountId = _account.AccountId,
                 ToAccountId = toAccount.AccountId,
                 Amount = amount,
             };
 
             //Act
             var sut = new TransactionService(_mapper, _transactionRepository.Object, _accountRepository.Object);
-            await sut.SaveTransferAsync(model).ConfigureAwait(false);
+            await sut.SaveTransaction(model).ConfigureAwait(false);
 
             //Assert
             _transactionRepository.Verify(x => x.AddAsync(It.IsAny<Transaction>()), Times.Exactly(2));
@@ -186,7 +186,7 @@ namespace Bank.Core.Tests.Services
             transactions[0].Type.ShouldBeEquivalentTo("Credit");
             transactions[0].Date.ToString().ShouldBeEquivalentTo(DateTime.Now.ToString());
             transactions[0].Amount.ShouldBeEquivalentTo(-model.Amount);
-            transactions[0].AccountId.ShouldBeEquivalentTo(model.FromAccountId);
+            transactions[0].AccountId.ShouldBeEquivalentTo(model.AccountId);
             transactions[0].Balance.ShouldBeEquivalentTo(_account.Balance);
 
             transactions[1].ShouldNotBeNull();

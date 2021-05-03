@@ -8,8 +8,6 @@ namespace Bank.Core.Services.Transactions
     {
         public Task<TransactionDetailsListViewModel> GetByAllIdAsync(int accountId);
         public Task<TransactionDetailsListViewModel> GetAmountByIdAsync(int accountId, int skip, int take);
-        public Task SaveDepositAsync(DepositViewModel model);
-        public Task SaveTransferAsync(TransferViewModel model);
-        public Task SaveWithdrawAsync(WithdrawViewModel model);
+        public Task SaveTransaction(TransactionBaseViewModel model);
     }
 }
