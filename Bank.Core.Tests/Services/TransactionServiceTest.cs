@@ -14,6 +14,7 @@ using Bank.Core.ViewModels.Transactions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Shouldly;
 
 namespace Bank.Core.Tests.Services
 {
@@ -53,10 +54,10 @@ namespace Bank.Core.Tests.Services
         public async Task ShouldSaveDepositTransaction(int amount)
         {
             //Arrange
-            Transaction savedTransaction = null;
+            Transaction actual = null;
             _transactionRepository.Setup(x => x.AddAsync(It.IsAny<Transaction>())).Callback<Transaction>(transaction =>
             {
-                savedTransaction = transaction;
+                actual = transaction;
             });
 
             _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
@@ -82,13 +83,14 @@ namespace Bank.Core.Tests.Services
             _accountRepository.Verify(x => x.GetByIdAsync(_account.AccountId), Times.Once());
             _accountRepository.Verify(x => x.UpdateAsync(_account), Times.Once());
 
-            Assert.IsNotNull(savedTransaction);
-            Assert.AreEqual("Deposit", savedTransaction.Operation);
-            Assert.AreEqual("Credit", savedTransaction.Type);
-            Assert.AreEqual(DateTime.Now.ToString(), savedTransaction.Date.ToString());
-            Assert.AreEqual(model.Amount, savedTransaction.Amount);
-            Assert.AreEqual(model.AccountId, savedTransaction.AccountId);
-            Assert.AreEqual(_account.Balance, savedTransaction.Balance);
+            actual.ShouldNotBeNull();
+            actual.Operation.ShouldBeEquivalentTo("Deposit");
+            actual.Type.ShouldBeEquivalentTo("Credit");
+            actual.Date.ToString().ShouldBeEquivalentTo(DateTime.Now.ToString());
+            actual.Amount.ShouldBeEquivalentTo(model.Amount);
+            actual.AccountId.ShouldBeEquivalentTo(model.AccountId);
+            actual.Balance.ShouldBeEquivalentTo(_account.Balance);
+
         }
 
         [DataTestMethod]
@@ -97,10 +99,10 @@ namespace Bank.Core.Tests.Services
         public async Task ShouldSaveWithdrawTransaction(int amount)
         {
             //Arrange
-            Transaction savedTransaction = null;
+            Transaction actual = null;
             _transactionRepository.Setup(x => x.AddAsync(It.IsAny<Transaction>())).Callback<Transaction>(transaction =>
             {
-                savedTransaction = transaction;
+                actual = transaction;
             });
 
             _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
@@ -123,13 +125,16 @@ namespace Bank.Core.Tests.Services
             _transactionRepository.Verify(x => x.AddAsync(It.IsAny<Transaction>()), Times.Once());
             _accountRepository.Verify(x => x.GetByIdAsync(_account.AccountId), Times.Once());
             _accountRepository.Verify(x => x.UpdateAsync(_account), Times.Once());
-            Assert.IsNotNull(savedTransaction);
-            Assert.AreEqual("Withdraw", savedTransaction.Operation);
-            Assert.AreEqual("Credit", savedTransaction.Type);
-            Assert.AreEqual(DateTime.Now.ToString(), savedTransaction.Date.ToString());
-            Assert.AreEqual(-model.Amount, savedTransaction.Amount);
-            Assert.AreEqual(model.AccountId, savedTransaction.AccountId);
-            Assert.AreEqual(_account.Balance, savedTransaction.Balance);
+
+            //Assert.AreEqual(-model.Amount, savedTransaction.Amount);
+
+            actual.ShouldNotBeNull();
+            actual.Operation.ShouldBeEquivalentTo("Withdraw");
+            actual.Type.ShouldBeEquivalentTo("Credit");
+            actual.Date.ToString().ShouldBeEquivalentTo(DateTime.Now.ToString());
+            //actual.Amount.ShouldBeEquivalentTo(model.Amount);
+            actual.AccountId.ShouldBeEquivalentTo(model.AccountId);
+            actual.Balance.ShouldBeEquivalentTo(_account.Balance);
         }
 
         [DataTestMethod]
@@ -174,20 +179,23 @@ namespace Bank.Core.Tests.Services
             _accountRepository.Verify(x => x.GetByIdAsync(It.IsAny<int>()), Times.Exactly(2));
             _accountRepository.Verify(x => x.UpdateAsync(It.IsAny<Account>()), Times.Exactly(2));
 
-            Assert.AreEqual(transactions.Count, 2);
-            Assert.AreEqual("Transfer to another account.", transactions[0].Operation);
-            Assert.AreEqual("Credit", transactions[0].Type);
-            Assert.AreEqual(DateTime.Now.ToString(), transactions[0].Date.ToString());
-            Assert.AreEqual(-model.Amount, transactions[0].Amount);
-            Assert.AreEqual(model.FromAccountId, transactions[0].AccountId);
-            Assert.AreEqual(_account.Balance, transactions[0].Balance);
+            transactions.Count.ShouldBeEquivalentTo(2);
 
-            Assert.AreEqual("Transfer from another account.", transactions[1].Operation);
-            Assert.AreEqual("Credit", transactions[1].Type);
-            Assert.AreEqual(DateTime.Now.ToString(), transactions[1].Date.ToString());
-            Assert.AreEqual(model.Amount, transactions[1].Amount);
-            Assert.AreEqual(model.ToAccountId, transactions[1].AccountId);
-            Assert.AreEqual(toAccount.Balance, transactions[1].Balance);
+            transactions[0].ShouldNotBeNull();
+            transactions[0].Operation.ShouldBeEquivalentTo("Transfer to another account.");
+            transactions[0].Type.ShouldBeEquivalentTo("Credit");
+            transactions[0].Date.ToString().ShouldBeEquivalentTo(DateTime.Now.ToString());
+            transactions[0].Amount.ShouldBeEquivalentTo(-model.Amount);
+            transactions[0].AccountId.ShouldBeEquivalentTo(model.FromAccountId);
+            transactions[0].Balance.ShouldBeEquivalentTo(_account.Balance);
+
+            transactions[1].ShouldNotBeNull();
+            transactions[1].Operation.ShouldBeEquivalentTo("Transfer from another account.");
+            transactions[1].Type.ShouldBeEquivalentTo("Credit");
+            transactions[1].Date.ToString().ShouldBeEquivalentTo(DateTime.Now.ToString());
+            transactions[1].Amount.ShouldBeEquivalentTo(model.Amount);
+            transactions[1].AccountId.ShouldBeEquivalentTo(model.ToAccountId);
+            transactions[1].Balance.ShouldBeEquivalentTo(toAccount.Balance);
         }
     }
 }

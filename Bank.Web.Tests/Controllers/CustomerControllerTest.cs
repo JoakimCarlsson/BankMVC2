@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Shouldly;
 
 namespace Bank.Web.Tests.Controllers
 {
@@ -35,11 +36,11 @@ namespace Bank.Web.Tests.Controllers
             _sut = new CustomerController(_customerService.Object);
 
             //Act
-            var result = await _sut.CustomerDetails(customerDetailsViewModel.CustomerId).ConfigureAwait(false) as ViewResult;
+            var actual = await _sut.CustomerDetails(customerDetailsViewModel.CustomerId).ConfigureAwait(false) as ViewResult;
 
             //Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(customerDetailsViewModel, result.Model);
+            actual.ShouldNotBeNull();
+            actual.Model.ShouldBeEquivalentTo(customerDetailsViewModel);
         }
 
         [TestMethod]
@@ -51,11 +52,11 @@ namespace Bank.Web.Tests.Controllers
             _sut = new CustomerController(_customerService.Object);
 
             //Act
-            var result = await _sut.CustomerDetails(1).ConfigureAwait(false) as ViewResult;
+            var actual = await _sut.CustomerDetails(1).ConfigureAwait(false) as ViewResult;
 
             //Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual("_Error", result.ViewName);
+            actual.ShouldNotBeNull();
+            actual.ViewName.ShouldBeEquivalentTo("_Error");
         }
     }
 }
