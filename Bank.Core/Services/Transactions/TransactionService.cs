@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bank.Core.Enums;
 
 namespace Bank.Core.Services.Transactions
 {
@@ -49,23 +50,18 @@ namespace Bank.Core.Services.Transactions
             return model;
         }
 
-        public async Task SaveTransaction(TransactionBaseViewModel model)
+        public async Task<TransactionResultCode> SaveTransaction(TransactionBaseViewModel model)
         {
-            switch (model)
+            return model switch
             {
-                case DepositViewModel viewModel:
-                    await SaveDepositAsync(viewModel).ConfigureAwait(false);
-                    break;
-                case TransferViewModel viewModel:
-                    await SaveTransferAsync(viewModel).ConfigureAwait(false);
-                    break;
-                case WithdrawViewModel viewModel:
-                    await SaveWithdrawAsync(viewModel).ConfigureAwait(false);
-                    break;
-            }
+                DepositViewModel viewModel => await SaveDepositAsync(viewModel).ConfigureAwait(false),
+                TransferViewModel viewModel => await SaveTransferAsync(viewModel).ConfigureAwait(false),
+                WithdrawViewModel viewModel => await SaveWithdrawAsync(viewModel).ConfigureAwait(false),
+                _ => TransactionResultCode.Error
+            };
         }
 
-        private async Task SaveDepositAsync(DepositViewModel model)
+        private async Task<TransactionResultCode> SaveDepositAsync(DepositViewModel model)
         {
             var newTransaction = _mapper.Map<Transaction>(model);
             var account = await _accountRepository.GetByIdAsync(newTransaction.AccountId).ConfigureAwait(false);
@@ -79,9 +75,11 @@ namespace Bank.Core.Services.Transactions
 
             await _accountRepository.UpdateAsync(account).ConfigureAwait(false);
             await _transactionRepository.AddAsync(newTransaction).ConfigureAwait(false);
+
+            return TransactionResultCode.Success;
         }
 
-        private async Task SaveTransferAsync(TransferViewModel model)
+        private async Task<TransactionResultCode> SaveTransferAsync(TransferViewModel model)
         {
             var fromAccount = await _accountRepository.GetByIdAsync(model.AccountId).ConfigureAwait(false);
             var toAccount = await _accountRepository.GetByIdAsync(model.ToAccountId).ConfigureAwait(false);
@@ -110,9 +108,12 @@ namespace Bank.Core.Services.Transactions
             await _accountRepository.UpdateAsync(toAccount).ConfigureAwait(false);
             await _transactionRepository.AddAsync(fromTransaction).ConfigureAwait(false);
             await _transactionRepository.AddAsync(toTransaction).ConfigureAwait(false);
+
+            return TransactionResultCode.Success;
+
         }
 
-        private async Task SaveWithdrawAsync(WithdrawViewModel model)
+        private async Task<TransactionResultCode> SaveWithdrawAsync(WithdrawViewModel model)
         {
             var transaction = new Transaction();
             var account = await _accountRepository.GetByIdAsync(model.AccountId).ConfigureAwait(false);
@@ -129,8 +130,9 @@ namespace Bank.Core.Services.Transactions
 
             await _accountRepository.UpdateAsync(account).ConfigureAwait(false);
             await _transactionRepository.AddAsync(transaction).ConfigureAwait(false);
+
+            return TransactionResultCode.Success;
+
         }
-
-
     }
 }

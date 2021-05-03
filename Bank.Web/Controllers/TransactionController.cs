@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Bank.Core.Services.Transactions;
-using Bank.Core.Validators;
+﻿using Bank.Core.Services.Transactions;
 using Bank.Core.ViewModels.Transactions;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Bank.Core.Enums;
 
 namespace Bank.Web.Controllers
 {
@@ -45,8 +40,10 @@ namespace Bank.Web.Controllers
         public async Task<IActionResult> Deposit(DepositViewModel model)
         {
             if (ModelState.IsValid)
-                await _transactionService.SaveTransaction(model).ConfigureAwait(false);
-            
+            {
+                var resultCode = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
+            }
+
             return View(model);
         }
 
@@ -61,8 +58,10 @@ namespace Bank.Web.Controllers
         public async Task<IActionResult> Withdraw(WithdrawViewModel model)
         {
             if (ModelState.IsValid)
-               await _transactionService.SaveTransaction(model).ConfigureAwait(false);
-            
+            {
+                var resultCode = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
+            }
+
             return View(model);
         }
 
@@ -77,7 +76,9 @@ namespace Bank.Web.Controllers
         public async Task<IActionResult> Transfer(TransferViewModel model)
         {
             if (ModelState.IsValid)
-                await _transactionService.SaveTransaction(model).ConfigureAwait(false);
+            {
+                var resultCode = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
+            }
 
             return View(model);
         }
