@@ -22,7 +22,7 @@ namespace Bank.Web.Controllers
         [ResponseCache(Duration = 30)]
         public IActionResult Index()
         {
-            return View(_homeService.GetStats());
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,4 +1,4 @@
-﻿@model Bank.Core.ViewModels.IndexViewModel
+﻿@*@model Bank.Core.ViewModels.IndexViewModel*@
 
 @{
     ViewData["Title"] = "Home Page";
@@ -14,40 +14,4 @@
     </div>
 </section>
 
-<div class="row">
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-info">
-            <div class="inner">
-                <h3>@Model.TotalCustomers</h3>
-                <p>Total amount of customers.</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-user"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-success">
-            <div class="inner">
-                <h3>@Model.TotalAccounts</h3>
-                <p>Total amount of accounts.</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-user"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-warning">
-            <div class="inner">
-                <h3>@Model.TotalBalance</h3>
-                <p>Total balance.</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-balance-scale"></i>
-            </div>
-        </div>
-    </div>
-</div>
+@await Component.InvokeAsync("BankStatisticsComponent").ConfigureAwait(false)

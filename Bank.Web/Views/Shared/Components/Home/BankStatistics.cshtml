@@ -1,0 +1,26 @@
+﻿@using Bank.Core.ViewModels
+@model Bank.Core.ViewModels.IndexViewModel
+
+<div class="row">
+    <partial name="Home/_StatisticsCard" model="@(new StatisticsCardViewModel{
+                                                    Colour = "info",
+                                                    Icon = "fas fa-user",
+                                                    Text = @Model.TotalCustomers.ToString(),
+                                                    Title =  "Total amount of customer."
+                                                })" />
+
+    <partial name="Home/_StatisticsCard" model="@(new StatisticsCardViewModel{
+                                                    Colour = "success",
+                                                    Icon = "fas fa-user",
+                                                    Text = @Model.TotalAccounts.ToString(),
+                                                    Title =  "Total amount of accounts."
+                                                })" />
+
+    <partial name="Home/_StatisticsCard" model="@(new StatisticsCardViewModel{
+                                                    Colour = "warning",
+                                                    Icon = "fas fa-balance-scale",
+                                                    Text = @Model.TotalBalance.ToString(),
+                                                    Title =  "Total balance."
+                                                })" />
+    
+</div>
