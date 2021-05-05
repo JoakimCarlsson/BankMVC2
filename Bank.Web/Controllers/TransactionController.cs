@@ -39,13 +39,12 @@ namespace Bank.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Deposit(DepositViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+
+            var result = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
+            if (result.Result == TransactionResultCode.Success)
             {
-                var result = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
-                if (result.Result == TransactionResultCode.Success)
-                {
-                    return RedirectToAction(nameof(TransactionConfirmation), new {transactionId =  result.TransactionId});
-                }
+                return RedirectToAction(nameof(TransactionConfirmation), new { transactionId = result.TransactionId });
             }
 
             return View(model);
@@ -66,6 +65,8 @@ namespace Bank.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Withdraw(WithdrawViewModel model)
         {
+            if (!ModelState.IsValid) return View(model);
+
             var result = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
             if (result.Result == TransactionResultCode.Success)
             {
@@ -85,6 +86,8 @@ namespace Bank.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Transfer(TransferViewModel model)
         {
+            if (!ModelState.IsValid) return View(model);
+
             var result = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
             if (result.Result == TransactionResultCode.Success)
             {
