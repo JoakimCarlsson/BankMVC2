@@ -1,0 +1,52 @@
+﻿@model Bank.Core.ViewModels.Transactions.TransactionConfirmationViewModel
+
+@{
+    ViewBag.Title = "Transaction Confirmation";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Confirmation</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="col-md-4 mx-auto">
+    <div class="card card-success card-outline">
+        <div class="card-body box-profile">
+            <div class="text-center">
+                <i class="far fa-check-circle fa-10x" style="color: rgb(102, 225, 102)"></i>
+            </div>
+            <h3 class="profile-username text-center">Transaction Confirmation</h3>
+            <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                    <b>Transaction ID: </b> <a class="float-right">@Model.TransactionId</a>
+                </li>
+                <li class="list-group-item">
+                    <b>Account ID: </b> <a class="float-right">@Model.AccountId</a>
+                </li>
+                <li class="list-group-item">
+                    <b>Type: </b> <a class="float-right">@Model.Type</a>
+                </li>
+                <li class="list-group-item">
+                    <b>Operation: </b> <a class="float-right">@Model.Operation</a>
+                </li>
+                <li class="list-group-item">
+                    <b>Amount: </b> <a class="float-right">@Model.Amount</a>
+                </li>
+                <li class="list-group-item">
+                    <b>Balance: </b> <a class="float-right">@Model.Balance</a>
+                </li>
+                <li class="list-group-item">
+                    <b>Date: </b> <a class="float-right">@Model.Date</a>
+                </li>
+            </ul>
+
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-block">Back</a>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>

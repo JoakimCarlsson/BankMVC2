@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Bank.Core.Enums;
 using Bank.Core.ViewModels.Transactions;
 using Bank.Data.Models;
 using Bank.Data.Repositories.Account;
@@ -8,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Bank.Core.Enums;
 
 namespace Bank.Core.Services.Transactions
 {
@@ -50,18 +50,25 @@ namespace Bank.Core.Services.Transactions
             return model;
         }
 
-        public async Task<TransactionResultCode> SaveTransaction(TransactionBaseViewModel model)
+        public async Task<TransactionResultViewModel> SaveTransaction(TransactionBaseViewModel model)
         {
             return model switch
             {
                 DepositViewModel viewModel => await SaveDepositAsync(viewModel).ConfigureAwait(false),
                 TransferViewModel viewModel => await SaveTransferAsync(viewModel).ConfigureAwait(false),
                 WithdrawViewModel viewModel => await SaveWithdrawAsync(viewModel).ConfigureAwait(false),
-                _ => TransactionResultCode.Error
+                _ => new TransactionResultViewModel { Result = TransactionResultCode.Error, TransactionId = 0 }
             };
         }
 
-        private async Task<TransactionResultCode> SaveDepositAsync(DepositViewModel model)
+        public async Task<TransactionConfirmationViewModel> GetConfirmation(int transactionId)
+        {
+            var transaction = await _transactionRepository.GetByIdAsync(transactionId).ConfigureAwait(false);
+            var model = _mapper.Map<TransactionConfirmationViewModel>(transaction);
+            return model;
+        }
+
+        private async Task<TransactionResultViewModel> SaveDepositAsync(DepositViewModel model)
         {
             var newTransaction = _mapper.Map<Transaction>(model);
             var account = await _accountRepository.GetByIdAsync(newTransaction.AccountId).ConfigureAwait(false);
@@ -74,12 +81,12 @@ namespace Bank.Core.Services.Transactions
             account.Balance += newTransaction.Amount;
 
             await _accountRepository.UpdateAsync(account).ConfigureAwait(false);
-            await _transactionRepository.AddAsync(newTransaction).ConfigureAwait(false);
+            var transaction = await _transactionRepository.AddAsync(newTransaction).ConfigureAwait(false);
 
-            return TransactionResultCode.Success;
+            return new TransactionResultViewModel { Result = TransactionResultCode.Success, TransactionId = transaction.TransactionId };
         }
 
-        private async Task<TransactionResultCode> SaveTransferAsync(TransferViewModel model)
+        private async Task<TransactionResultViewModel> SaveTransferAsync(TransferViewModel model)
         {
             var fromAccount = await _accountRepository.GetByIdAsync(model.AccountId).ConfigureAwait(false);
             var toAccount = await _accountRepository.GetByIdAsync(model.ToAccountId).ConfigureAwait(false);
@@ -106,14 +113,13 @@ namespace Bank.Core.Services.Transactions
 
             await _accountRepository.UpdateAsync(fromAccount).ConfigureAwait(false);
             await _accountRepository.UpdateAsync(toAccount).ConfigureAwait(false);
-            await _transactionRepository.AddAsync(fromTransaction).ConfigureAwait(false);
+            var transaction = await _transactionRepository.AddAsync(fromTransaction).ConfigureAwait(false);
             await _transactionRepository.AddAsync(toTransaction).ConfigureAwait(false);
 
-            return TransactionResultCode.Success;
-
+            return new TransactionResultViewModel { Result = TransactionResultCode.Success, TransactionId = transaction.TransactionId };
         }
 
-        private async Task<TransactionResultCode> SaveWithdrawAsync(WithdrawViewModel model)
+        private async Task<TransactionResultViewModel> SaveWithdrawAsync(WithdrawViewModel model)
         {
             var transaction = new Transaction();
             var account = await _accountRepository.GetByIdAsync(model.AccountId).ConfigureAwait(false);
@@ -129,10 +135,9 @@ namespace Bank.Core.Services.Transactions
             account.Balance -= -transaction.Amount;
 
             await _accountRepository.UpdateAsync(account).ConfigureAwait(false);
-            await _transactionRepository.AddAsync(transaction).ConfigureAwait(false);
+            var savedTransaction = await _transactionRepository.AddAsync(transaction).ConfigureAwait(false);
 
-            return TransactionResultCode.Success;
-
+            return new TransactionResultViewModel { Result = TransactionResultCode.Success, TransactionId = savedTransaction.TransactionId };
         }
     }
 }

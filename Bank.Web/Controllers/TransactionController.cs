@@ -41,10 +41,19 @@ namespace Bank.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var resultCode = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
+                var result = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
+                if (result.Result == TransactionResultCode.Success)
+                {
+                    return RedirectToAction(nameof(TransactionConfirmation), new {transactionId =  result.TransactionId});
+                }
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> TransactionConfirmation(int transactionId)
+        {
+            return View(await _transactionService.GetConfirmation(transactionId).ConfigureAwait(false));
         }
 
         public IActionResult Withdraw()
@@ -57,9 +66,10 @@ namespace Bank.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Withdraw(WithdrawViewModel model)
         {
-            if (ModelState.IsValid)
+            var result = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
+            if (result.Result == TransactionResultCode.Success)
             {
-                var resultCode = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
+                return RedirectToAction(nameof(TransactionConfirmation), new { transactionId = result.TransactionId });
             }
 
             return View(model);
@@ -75,9 +85,10 @@ namespace Bank.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Transfer(TransferViewModel model)
         {
-            if (ModelState.IsValid)
+            var result = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
+            if (result.Result == TransactionResultCode.Success)
             {
-                var resultCode = await _transactionService.SaveTransaction(model).ConfigureAwait(false);
+                return RedirectToAction(nameof(TransactionConfirmation), new { transactionId = result.TransactionId });
             }
 
             return View(model);
