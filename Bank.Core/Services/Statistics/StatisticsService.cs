@@ -2,18 +2,18 @@
 using Bank.Core.ViewModels;
 using Bank.Data.Data;
 
-namespace Bank.Core.Services.Home
+namespace Bank.Core.Services.Statistics
 {
-    public class HomeService : IHomeService
+    public class StatisticsService : IStatisticsService
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public HomeService(ApplicationDbContext dbContext)
+        public StatisticsService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public IndexViewModel GetStats()
+        public IndexViewModel GetStatistics()
         {
             return new()
             {

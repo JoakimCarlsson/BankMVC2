@@ -1,4 +1,4 @@
-﻿using Bank.Core.Services.Home;
+﻿using Bank.Core.Services.Statistics;
 using Bank.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +11,9 @@ namespace Bank.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IHomeService _homeService;
+        private readonly IStatisticsService _homeService;
 
-        public HomeController(ILogger<HomeController> logger, IHomeService homeService)
+        public HomeController(ILogger<HomeController> logger, IStatisticsService homeService)
         {
             _logger = logger;
             _homeService = homeService;
