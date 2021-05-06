@@ -1,0 +1,35 @@
+﻿@model Bank.Core.ViewModels.Statistics.CountryStatisticsViewModel
+
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Condensed Full Width Table</h3>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th style="width: 10px">Country</th>
+                        <th>Customers Amount</th>
+                        <th>Accounts Amount</th>
+                        <th style="width: 40px">Balance</th>
+                        <th>Top 10</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var country in Model.Countries)
+                    {
+                        <tr>
+                            <td>@country.Country</td>
+                            <td>@country.CustomerAmount</td>
+                            <td>@country.AccountAmount</td>
+                            <td><span class="badge bg-danger">@country.AccountsTotalBalance</span></td>
+                            <td><a class="btn btn-block btn-secondary btn-xs" asp-controller="Statistics" asp-action="Index" asp-route-country="@country.Country">Get Top 10</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>

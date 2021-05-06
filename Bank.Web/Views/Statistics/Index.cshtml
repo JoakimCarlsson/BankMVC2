@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Bank.Core.ViewModels.Statistics.TopCustomerViewModel>
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Top 10</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Top 10.</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0">
+            <table class="table table-hover text-nowrap">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Balance</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var customer in @Model)
+                {
+                    <tr>
+                        <td>@customer.CustomerId</td>
+                        <td>@customer.FirstName</td>
+                        <td>@customer.LastName</td>
+                        <td>@customer.TotalBalance</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>

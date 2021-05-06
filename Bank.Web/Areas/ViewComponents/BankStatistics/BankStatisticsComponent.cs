@@ -14,7 +14,7 @@ namespace Bank.Web.Areas.ViewComponents.BankStatistics
 
         public IViewComponentResult Invoke()
         {
-            var model = _homeService.GetStatistics();
+            var model = _homeService.GetBaseStatistics();
             return View("/Views/Shared/Components/Home/BankStatistics.cshtml", model);
         }
     }
