@@ -55,7 +55,7 @@ namespace Bank.Core.Validators.User
 
         private Task<bool> BeUniqe(string email, CancellationToken token)
         {
-            return _userService.CheckIfEmailExists(email);
+            return _userService.CheckIfEmailExistsAsync(email);
         }
     }
 }

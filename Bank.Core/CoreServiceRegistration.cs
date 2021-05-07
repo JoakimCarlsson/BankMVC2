@@ -21,6 +21,7 @@ namespace Bank.Core
             services.AddTransient<IValidator<TransferViewModel>, TransferViewModelValidator>();
             services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
             services.AddTransient<IValidator<UserRegisterViewModel>, UserRegisterViewModelValidator>();
+            services.AddTransient<IValidator<UserEditViewModel>, UserEditViewModelValidator>();
 
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<ICustomerService, CustomerService>();

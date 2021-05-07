@@ -22,6 +22,7 @@ namespace Bank.Core.Mapping
             CreateMap<Transaction, TransactionConfirmationViewModel>();
 
             CreateMap<IdentityUser, UserViewModel>();
+            CreateMap<IdentityUser, UserEditViewModel>();
 
             CreateMap<Disposition, TopCustomerViewModel>()
                 .ForMember(i => i.FirstName, opt => opt.MapFrom(c => c.Customer.Givenname))
