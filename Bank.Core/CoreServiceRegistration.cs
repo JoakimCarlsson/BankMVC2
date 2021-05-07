@@ -1,11 +1,14 @@
 ﻿using Bank.Core.Services.Customers;
+using Bank.Core.Services.Statistics;
 using Bank.Core.Services.Transactions;
+using Bank.Core.Services.User;
 using Bank.Core.Validators.Transfer;
 using Bank.Core.ViewModels.Transactions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using Bank.Core.Services.Statistics;
+using Bank.Core.Validators.User;
+using Bank.Core.ViewModels.User;
 
 namespace Bank.Core
 {
@@ -17,10 +20,12 @@ namespace Bank.Core
             services.AddTransient<IValidator<DepositViewModel>, DepositViewModelValidator>();
             services.AddTransient<IValidator<TransferViewModel>, TransferViewModelValidator>();
             services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
+            services.AddTransient<IValidator<UserRegisterViewModel>, UserRegisterViewModelValidator>();
 
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<IUserService, UserService>();
 
             return services;
         }

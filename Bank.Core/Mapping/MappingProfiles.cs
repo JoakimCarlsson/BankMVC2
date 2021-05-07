@@ -3,7 +3,9 @@ using Bank.Core.ViewModels.Accounts;
 using Bank.Core.ViewModels.Customers;
 using Bank.Core.ViewModels.Statistics;
 using Bank.Core.ViewModels.Transactions;
+using Bank.Core.ViewModels.User;
 using Bank.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Bank.Core.Mapping
 {
@@ -18,6 +20,8 @@ namespace Bank.Core.Mapping
             CreateMap<DepositViewModel, Transaction>();
             CreateMap<WithdrawViewModel, Transaction>();
             CreateMap<Transaction, TransactionConfirmationViewModel>();
+
+            CreateMap<IdentityUser, UserViewModel>();
 
             CreateMap<Disposition, TopCustomerViewModel>()
                 .ForMember(i => i.FirstName, opt => opt.MapFrom(c => c.Customer.Givenname))
