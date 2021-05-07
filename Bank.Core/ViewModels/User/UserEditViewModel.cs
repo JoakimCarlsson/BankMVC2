@@ -8,10 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Bank.Core.ViewModels.User
 {
-    public class UserEditViewModel
+    public class UserEditViewModel : UserBaseViewModel
     {
         public string Id { get; set; }
-        public string Email { get; set; }
         public string OldEmail { get; set; }
         public List<string> CurrentRoles { get; set; }
         public List<SelectListItem> AllRoles { get; set; }

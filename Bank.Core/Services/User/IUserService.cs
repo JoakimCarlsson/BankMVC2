@@ -16,7 +16,8 @@ namespace Bank.Core.Services.User
         public Task<UserListViewModel> GetAllUsersAsync();
         public Task<UserEditViewModel> GetUserEdit(string id);
         public Task<UserViewModel> GetUserByIdAsync(string id);
-        public Task<List<SelectListItem>> GetUserRoles(string id);
-        public Task SaveUserAsync(UserEditViewModel model);
+        public Task<List<SelectListItem>> GetActiveUserRoles(string id);
+        public Task<List<string>> GetAllRolesAsync();
+        public Task SaveUserAsync(UserBaseViewModel model);
     }
 }

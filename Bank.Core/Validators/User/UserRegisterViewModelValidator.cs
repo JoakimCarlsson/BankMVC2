@@ -39,18 +39,17 @@ namespace Bank.Core.Validators.User
 
             RuleFor(p => p.Password)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
-                .Password()
-                .NotNull();
+                .NotNull()
+                .Password();
 
             RuleFor(p => p.ConfirmPassword)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
-                .Password()
                 .NotNull()
                 .Equal(i => i.Password);
 
 
             RuleFor(i => i.Roles)
-                .NotEmpty().WithMessage("{PropertyName} is required.");
+                .NotEmpty().WithMessage("You must select atleast one role.");
         }
 
         private Task<bool> BeUniqe(string email, CancellationToken token)

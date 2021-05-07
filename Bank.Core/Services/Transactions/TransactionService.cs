@@ -57,7 +57,7 @@ namespace Bank.Core.Services.Transactions
                 DepositViewModel viewModel => await SaveDepositAsync(viewModel).ConfigureAwait(false),
                 TransferViewModel viewModel => await SaveTransferAsync(viewModel).ConfigureAwait(false),
                 WithdrawViewModel viewModel => await SaveWithdrawAsync(viewModel).ConfigureAwait(false),
-                _ => new TransactionResultViewModel { Result = TransactionResultCode.Error, TransactionId = 0 }
+                _ => new TransactionResultViewModel {Result = TransactionResultCode.Error, TransactionId = 0}
             };
         }
 

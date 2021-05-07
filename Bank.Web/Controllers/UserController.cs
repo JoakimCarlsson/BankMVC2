@@ -16,7 +16,7 @@ namespace Bank.Web.Controllers
         private readonly IUserService _userService;
 
         public UserController(IUserService userService)
-        { 
+        {
             _userService = userService;
         }
 
@@ -28,12 +28,13 @@ namespace Bank.Web.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var model = await _userService.GetUserEdit(id).ConfigureAwait(false);
-            model.AllRoles = await _userService.GetUserRoles(id).ConfigureAwait(false);
+            model.AllRoles = await _userService.GetActiveUserRoles(id).ConfigureAwait(false);
 
             return View(model);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAsync(UserEditViewModel model)
         {
             if (ModelState.IsValid)
@@ -42,7 +43,27 @@ namespace Bank.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            model.AllRoles = await _userService.GetUserRoles(model.Id).ConfigureAwait(false);
+            model.AllRoles = await _userService.GetActiveUserRoles(model.Id).ConfigureAwait(false);
+            return View(model);
+        }
+
+        public async Task<IActionResult> Register()
+        {
+            var model = new UserRegisterViewModel {Roles = await _userService.GetAllRolesAsync().ConfigureAwait(false)};
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterAsync(UserRegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _userService.SaveUserAsync(model).ConfigureAwait(false);
+                return RedirectToAction(nameof(Index));
+                //todo maybe implement toasify, maybe.
+            }
+            model.Roles = await _userService.GetAllRolesAsync().ConfigureAwait(false);
             return View(model);
         }
     }

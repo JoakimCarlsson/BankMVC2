@@ -59,7 +59,7 @@ namespace Bank.Core.Services.User
             return _mapper.Map<UserViewModel>(await _userManager.Users.FirstAsync(i => i.Id == id).ConfigureAwait(false));
         }
 
-        public async Task<List<SelectListItem>> GetUserRoles(string id)
+        public async Task<List<SelectListItem>> GetActiveUserRoles(string id)
         {
             var roles = _roleManager.Roles.ToList();
             var activeRoles = await _userManager.GetRolesAsync(_userManager.Users.First(i => i.Id == id)).ConfigureAwait(false);
@@ -75,11 +75,42 @@ namespace Bank.Core.Services.User
             return list;
         }
 
-        public async Task SaveUserAsync(UserEditViewModel model)
+        public async Task<List<string>> GetAllRolesAsync()
         {
-            //todo, we can probaly fix this. We ew can just check which roles that has been changed and fix that accodinly.
-            //but this also works..
+            List<string> tmpList = new();
+            tmpList.AddRange(_roleManager.Roles.Select(i => i.Name));
+            return tmpList;
+        }
 
+        public async Task SaveUserAsync(UserBaseViewModel model)
+        {
+            switch (model)
+            {
+                case UserEditViewModel viewModel:
+                    await SaveEditAsync(viewModel).ConfigureAwait(false);
+                    break;
+                case UserRegisterViewModel viewModel:
+                    await RegisterNewUserAsync(viewModel).ConfigureAwait(false);
+                    break;
+            }
+        }
+
+        private async Task RegisterNewUserAsync(UserRegisterViewModel model)
+        {
+            var user = new IdentityUser { UserName = model.Email, Email = model.Email, EmailConfirmed = true };
+            var result = await _userManager.CreateAsync(user, model.Password).ConfigureAwait(false);
+
+            if (result.Succeeded)
+            {
+                foreach (string role in model.Roles)
+                {
+                    await _userManager.AddToRoleAsync(user, role).ConfigureAwait(false);
+                }
+            }
+        }
+
+        private async Task SaveEditAsync(UserEditViewModel model)
+        {
             var user = _userManager.Users.FirstOrDefault(i => i.Id == model.Id);
             await _userManager.RemoveFromRolesAsync(user, (List<string>)await _userManager.GetRolesAsync(user)).ConfigureAwait(false);
             await _userManager.AddToRolesAsync(user, model.CurrentRoles).ConfigureAwait(false);
