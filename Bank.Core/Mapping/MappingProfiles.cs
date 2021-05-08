@@ -22,8 +22,13 @@ namespace Bank.Core.Mapping
             CreateMap<Transaction, TransactionConfirmationViewModel>();
 
             CreateMap<CustomerRegisterViewModel, Customer>()
-                .ForMember(i => i.Gender, opt => opt.MapFrom(i => i.SelectedGender)); //Double check that I Work, I guess well find out if I Crash First.
-            CreateMap<CustomerEditViewModel, Customer>(); //Double check that I Work, I guess well find out if I Crash First.
+                .ForMember(i => i.Gender, opt => opt.MapFrom(i => i.SelectedGender)); 
+
+            CreateMap<CustomerEditViewModel, Customer>()
+                .ForMember(i => i.Gender, opt => opt.MapFrom(i => i.SelectedGender));
+
+            CreateMap<Customer, CustomerEditViewModel>()
+                .ForMember(i => i.SelectedGender, opt => opt.MapFrom(i => i.Gender));
 
             CreateMap<IdentityUser, UserViewModel>();
             CreateMap<IdentityUser, UserEditViewModel>();

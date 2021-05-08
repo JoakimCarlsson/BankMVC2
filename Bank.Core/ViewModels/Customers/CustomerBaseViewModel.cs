@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
 namespace Bank.Core.ViewModels.Customers
@@ -17,5 +18,7 @@ namespace Bank.Core.ViewModels.Customers
         public string TelephoneCountryCode { get; set; }
         public string TelephoneNumber { get; set; }
         public string EmailAddress { get; set; }
+        public DateTime? Birthday { get; set; }
+        public string NationalId { get; set; }
     }
 }

@@ -83,6 +83,11 @@ namespace Bank.Core.Services.Customers
             }
         }
 
+        public async Task<CustomerEditViewModel> GetCustomerEditAsync(int id)
+        {
+            return _mapper.Map<CustomerEditViewModel>(await _customerRepository.GetByIdAsync(id).ConfigureAwait(false));
+        }
+
         private async Task RegisterNewUserAsync(CustomerRegisterViewModel viewModel)
         {
             var customer = _mapper.Map<Customer>(viewModel);
@@ -106,8 +111,8 @@ namespace Bank.Core.Services.Customers
 
         private async Task SaveEditAsync(CustomerEditViewModel viewModel)
         {
-            var customer = _mapper.Map<Customer>(viewModel);
-            await _customerRepository.UpdateAsync(customer).ConfigureAwait(false);
+            var editedCustomer = _mapper.Map<Customer>(viewModel);
+            await _customerRepository.UpdateAsync(editedCustomer).ConfigureAwait(false);
         }
 
         private async Task<IEnumerable<AccountCustomerViewModel>> GetAccountsAsync(CustomerDetailsViewModel model)

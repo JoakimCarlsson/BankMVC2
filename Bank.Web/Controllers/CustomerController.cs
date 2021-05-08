@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,13 +55,42 @@ namespace Bank.Web.Controllers
             return View(model);
         }
 
-        private List<SelectListItem> GetGenders()
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await _customerService.GetCustomerEditAsync(id).ConfigureAwait(false);
+            model.Genders = GetGenders(model.SelectedGender);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(CustomerEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _customerService.SaveCustomerAsync(model).ConfigureAwait(false);
+                return RedirectToAction(nameof(Index));
+            }
+
+            model.Genders = GetGenders(model.SelectedGender);
+            return View(model);
+        }
+
+        private List<SelectListItem> GetGenders(string selectedGender = "")
         {
             var tmpList = new List<SelectListItem>
             {
                 new() {Value = "male", Text = "Male"},
                 new() {Value = "female", Text = "Female"}
             };
+
+            if (!string.IsNullOrEmpty(selectedGender))
+            {
+                foreach (var selectListItem in tmpList.Where(selectListItem => selectedGender == selectListItem.Value))
+                {
+                    selectListItem.Selected = true;
+                }
+            }
 
             return tmpList;
         }

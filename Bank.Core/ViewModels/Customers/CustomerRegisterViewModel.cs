@@ -6,7 +6,6 @@ namespace Bank.Core.ViewModels.Customers
 {
     public class CustomerRegisterViewModel : CustomerBaseViewModel
     {
-        public DateTime? Birthday { get; set; }
-        public string NationalId { get; set; }
+
     }
 }

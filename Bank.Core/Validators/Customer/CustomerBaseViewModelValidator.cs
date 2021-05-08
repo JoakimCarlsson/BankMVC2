@@ -46,6 +46,15 @@ namespace Bank.Core.Validators.Customer
             RuleFor(e => e.EmailAddress)
                 .RequiredAndMaxAndMinLength(100)
                 .EmailAddress();
+
+            RuleFor(i => i.Birthday)
+                .NotEmpty().WithMessage("{PropertyName} is requierd.")
+                .NotNull()
+                .LessThan(DateTime.Now).WithMessage("Can't be born in the future."); //
+            //.GreaterThan(DateTime.MinValue);
+
+            RuleFor(i => i.NationalId)
+                .RequiredAndMaxAndMinLength(20);
         }
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Bank.Core.ViewModels.Customers
 {
-    class CustomerEditViewModel : CustomerBaseViewModel
+    public class CustomerEditViewModel : CustomerBaseViewModel
     {
-        public int Id { get; set; }
+        public int CustomerId { get; set; }
     }
 }
