@@ -7,5 +7,6 @@ namespace Bank.Core.Services.Customers
     {
         public Task<CustomerDetailsViewModel> GetByIdAsync(int id);
         public Task<CustomerSearchListViewModel> GetPagedSearchAsync(string q, int page, int pageSize);
+        public Task SaveCustomerAsync(CustomerBaseViewModel model);
     }
 }

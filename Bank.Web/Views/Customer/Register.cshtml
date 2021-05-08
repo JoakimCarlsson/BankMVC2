@@ -1,0 +1,169 @@
+﻿@model Bank.Core.ViewModels.Customers.CustomerRegisterViewModel
+
+@{
+    ViewData["Title"] = "Customer Register";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <h1>Register new Customer</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="col-md-4 mx-auto">
+    <form asp-controller="Customer" , asp-action="Register" method="post">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title">Deposit To Account</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input class="form-control" asp-for="GivenName">
+                        <span asp-validation-for="GivenName" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input class="form-control" asp-for="Surname">
+                        <span asp-validation-for="Surname" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Date of birth</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input type="date" class="form-control" asp-for="Birthday">
+                        <span asp-validation-for="Birthday" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Gender</label>
+                    @foreach (var gender in Model.Genders)
+                    {
+                        <div class="form-check">
+                            <input id="@gender.Value" type="radio" name="SelectedGender" value="@gender.Value"/>
+                            <label for="@gender.Value">@gender.Text</label>
+                        </div>
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label>Street address</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input class="form-control" asp-for="StreetAddress">
+                        <span asp-validation-for="StreetAddress" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>City</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input class="form-control" asp-for="City">
+                        <span asp-validation-for="City" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Zip Code</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input class="form-control" asp-for="Zipcode">
+                        <span asp-validation-for="Zipcode" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Country</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input class="form-control" asp-for="Country">
+                        <span asp-validation-for="Country" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Country Code</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input class="form-control" asp-for="CountryCode">
+                        <span asp-validation-for="CountryCode" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>NationalId</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input class="form-control" asp-for="NationalId">
+                        <span asp-validation-for="NationalId" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Telephone Country Code</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input class="form-control" asp-for="TelephoneCountryCode">
+                        <span asp-validation-for="TelephoneCountryCode" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Telephone Number</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input class="form-control" asp-for="TelephoneNumber">
+                        <span asp-validation-for="TelephoneNumber" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                        <input class="form-control" asp-for="EmailAddress">
+                        <span asp-validation-for="EmailAddress" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-secondary">Register</button>
+            </div>
+        </div>
+    </form>
+</div>

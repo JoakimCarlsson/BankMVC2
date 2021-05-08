@@ -10,7 +10,6 @@ namespace Bank.Core.Extensions
 {
     public static class RuleBuilderExtensions
     {
-        //todo fix me.
         public static IRuleBuilder<T, string> Password<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             
@@ -23,6 +22,18 @@ namespace Bank.Core.Extensions
             //.Matches("[a-z]+").WithMessage("{PropertyName} must have an lowercase letter.")
             //.Matches("[0-9]+").WithMessage("{PropertyName} must have a number.")
             //.Matches("[^a-zA-Z0-9]").WithMessage("{PropertyName} must have a special character.");
+
+            return options;
+        }
+
+        public static IRuleBuilder<T, string> RequiredAndMaxAndMinLength<T>(this IRuleBuilder<T, string> ruleBuilder, int maxLength, int minLength = 1)
+        {
+
+            var options = ruleBuilder
+                .NotNull().WithMessage("{PropertyName} is required.")
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .MinimumLength(minLength).WithMessage($"{{PropertyName}} cannot be less then {minLength} characters.")
+                .MaximumLength(maxLength).WithMessage($"{{PropertyName}} cannot exceed more then {maxLength} characters.");
 
             return options;
         }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Bank.Core.ViewModels.Accounts;
 using Bank.Core.ViewModels.Customers;
+using Bank.Data.Models;
 using Bank.Data.Repositories.Account;
 using Bank.Data.Repositories.Customer;
 using Bank.Data.Repositories.Disposition;
@@ -67,6 +68,46 @@ namespace Bank.Core.Services.Customers
             };
 
             return model;
+        }
+
+        public async Task SaveCustomerAsync(CustomerBaseViewModel model)
+        {
+            switch (model)
+            {
+                case CustomerEditViewModel viewModel:
+                    await SaveEditAsync(viewModel).ConfigureAwait(false);
+                    break;
+                case CustomerRegisterViewModel viewModel:
+                    await RegisterNewUserAsync(viewModel).ConfigureAwait(false);
+                    break;
+            }
+        }
+
+        private async Task RegisterNewUserAsync(CustomerRegisterViewModel viewModel)
+        {
+            var customer = _mapper.Map<Customer>(viewModel);
+            var account = new Account
+            {
+                Created = DateTime.Now,
+                Balance = 0,
+                Frequency = "Monthly"
+            };
+
+            var disposition = new Disposition
+            {
+                Account = account,
+                Customer = customer,
+                Type = "OWNER",
+            };
+
+            customer.Dispositions.Add(disposition);
+            await _customerRepository.AddAsync(customer).ConfigureAwait(false);
+        }
+
+        private async Task SaveEditAsync(CustomerEditViewModel viewModel)
+        {
+            var customer = _mapper.Map<Customer>(viewModel);
+            await _customerRepository.UpdateAsync(customer).ConfigureAwait(false);
         }
 
         private async Task<IEnumerable<AccountCustomerViewModel>> GetAccountsAsync(CustomerDetailsViewModel model)

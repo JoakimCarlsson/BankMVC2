@@ -7,7 +7,9 @@ using Bank.Core.ViewModels.Transactions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Bank.Core.Validators.Customer;
 using Bank.Core.Validators.User;
+using Bank.Core.ViewModels.Customers;
 using Bank.Core.ViewModels.User;
 
 namespace Bank.Core
@@ -22,6 +24,9 @@ namespace Bank.Core
             services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
             services.AddTransient<IValidator<UserRegisterViewModel>, UserRegisterViewModelValidator>();
             services.AddTransient<IValidator<UserEditViewModel>, UserEditViewModelValidator>();
+
+            services.AddTransient<IValidator<CustomerBaseViewModel>, CustomerBaseViewModelValidator>();
+            services.AddTransient<IValidator<CustomerRegisterViewModel>, CustomerRegisterViewModelValidator>();
 
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<ICustomerService, CustomerService>();
