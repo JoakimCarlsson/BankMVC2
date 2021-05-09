@@ -11,6 +11,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bank.Core;
+using Bank.Data;
+using Bank.Data.Data;
+using Bank.Data.Repositories.Account;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bank.API
 {
@@ -26,8 +33,15 @@ namespace Bank.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
+            services.AddCoreServices();
+            //services.AddDataServices(Configuration); //bank.data
+
+            services.AddTransient<IAccountRepository, AccountRepository>();
+
+            services.AddControllers().AddFluentValidation();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bank.API", Version = "v1" });

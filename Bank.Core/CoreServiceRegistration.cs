@@ -19,20 +19,20 @@ namespace Bank.Core
         public static IServiceCollection AddCoreServices(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddTransient<IValidator<DepositViewModel>, DepositViewModelValidator>();
-            services.AddTransient<IValidator<TransferViewModel>, TransferViewModelValidator>();
-            services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
-            services.AddTransient<IValidator<UserRegisterViewModel>, UserRegisterViewModelValidator>();
-            services.AddTransient<IValidator<UserEditViewModel>, UserEditViewModelValidator>();
+            //services.AddTransient<IValidator<DepositViewModel>, DepositViewModelValidator>();
+            //services.AddTransient<IValidator<TransferViewModel>, TransferViewModelValidator>();
+            //services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
+            //services.AddTransient<IValidator<UserRegisterViewModel>, UserRegisterViewModelValidator>();
+            //services.AddTransient<IValidator<UserEditViewModel>, UserEditViewModelValidator>();
 
-            services.AddTransient<IValidator<CustomerBaseViewModel>, CustomerBaseViewModelValidator>();
-            services.AddTransient<IValidator<CustomerRegisterViewModel>, CustomerRegisterViewModelValidator>();
-            services.AddTransient<IValidator<CustomerEditViewModel>, CustomerEditViewModelValidator>();
+            //services.AddTransient<IValidator<CustomerBaseViewModel>, CustomerBaseViewModelValidator>();
+            //services.AddTransient<IValidator<CustomerRegisterViewModel>, CustomerRegisterViewModelValidator>();
+            //services.AddTransient<IValidator<CustomerEditViewModel>, CustomerEditViewModelValidator>();
 
-            services.AddTransient<IStatisticsService, StatisticsService>();
-            services.AddTransient<ICustomerService, CustomerService>();
-            services.AddTransient<ITransactionService, TransactionService>();
-            services.AddTransient<IUserService, UserService>();
+            //services.AddTransient<IStatisticsService, StatisticsService>();
+            //services.AddTransient<ICustomerService, CustomerService>();
+            //services.AddTransient<ITransactionService, TransactionService>();
+            //services.AddTransient<IUserService, UserService>();
 
             return services;
         }

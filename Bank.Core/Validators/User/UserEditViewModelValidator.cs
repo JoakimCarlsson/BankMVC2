@@ -11,7 +11,7 @@ using FluentValidation;
 namespace Bank.Core.Validators.User
 {
     //todo fix me
-    class UserEditViewModelValidator : AbstractValidator<UserEditViewModel>
+    public class UserEditViewModelValidator : AbstractValidator<UserEditViewModel>
     {
         private readonly IUserService _userService;
 

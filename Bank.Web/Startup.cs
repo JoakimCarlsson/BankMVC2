@@ -1,4 +1,15 @@
+using System.Reflection;
 using Bank.Core;
+using Bank.Core.Services.Customers;
+using Bank.Core.Services.Statistics;
+using Bank.Core.Services.Transactions;
+using Bank.Core.Services.User;
+using Bank.Core.Validators.Customer;
+using Bank.Core.Validators.Transfer;
+using Bank.Core.Validators.User;
+using Bank.Core.ViewModels.Customers;
+using Bank.Core.ViewModels.Transactions;
+using Bank.Core.ViewModels.User;
 using Bank.Data.Data;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +20,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Bank.Data;
+using Bank.Data.Repositories.Account;
+using Bank.Data.Repositories.Base;
+using Bank.Data.Repositories.Customer;
+using Bank.Data.Repositories.Disposition;
+using Bank.Data.Repositories.Transaction;
+using FluentValidation;
 
 namespace Bank.Web
 {
@@ -27,8 +44,32 @@ namespace Bank.Web
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            //services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            //services.AddAutoMapper(typeof(Startup)); //Auto mapper
+
+            services.AddTransient<IValidator<DepositViewModel>, DepositViewModelValidator>();
+            services.AddTransient<IValidator<TransferViewModel>, TransferViewModelValidator>();
+            services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
+            services.AddTransient<IValidator<UserRegisterViewModel>, UserRegisterViewModelValidator>();
+            services.AddTransient<IValidator<UserEditViewModel>, UserEditViewModelValidator>();
+
+            services.AddTransient<IValidator<CustomerBaseViewModel>, CustomerBaseViewModelValidator>();
+            services.AddTransient<IValidator<CustomerRegisterViewModel>, CustomerRegisterViewModelValidator>();
+            services.AddTransient<IValidator<CustomerEditViewModel>, CustomerEditViewModelValidator>();
+
+            services.AddTransient<IStatisticsService, StatisticsService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<IUserService, UserService>();
+
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IDispositionRepository, DispositionRepository>();
+
             services.AddCoreServices(); //bank.core
-            services.AddDataServices(Configuration); //bank.data
+            //services.AddDataServices(Configuration); //bank.data
 
             services.AddResponseCaching();
 

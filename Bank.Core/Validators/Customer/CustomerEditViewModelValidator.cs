@@ -5,7 +5,7 @@ using System;
 
 namespace Bank.Core.Validators.Customer
 {
-    class CustomerEditViewModelValidator: AbstractValidator<CustomerEditViewModel>
+    public class CustomerEditViewModelValidator: AbstractValidator<CustomerEditViewModel>
     {
         public CustomerEditViewModelValidator()
         {

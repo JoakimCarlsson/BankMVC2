@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bank.Core.Services.User
 {
-    class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IMapper _mapper;

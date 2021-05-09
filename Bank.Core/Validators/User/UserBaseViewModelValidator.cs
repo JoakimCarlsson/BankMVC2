@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Bank.Core.Validators.User
 {
     //todo fix me
-    class UserRegisterViewModelValidator : AbstractValidator<UserRegisterViewModel>
+    public class UserRegisterViewModelValidator : AbstractValidator<UserRegisterViewModel>
     {
         private readonly IUserService _userService;
 
