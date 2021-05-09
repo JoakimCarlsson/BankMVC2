@@ -19,10 +19,10 @@ namespace Bank.Core.Test.Services
 {
     public class TransactionServiceTest
     {
-        private Mock<IAccountRepository> _accountRepository;
-        private Mock<ITransactionRepository> _transactionRepository;
-        private IMapper _mapper;
-        private Account _account;
+        private readonly Mock<IAccountRepository> _accountRepository;
+        private readonly Mock<ITransactionRepository> _transactionRepository;
+        private readonly IMapper _mapper;
+        private readonly Account _account;
 
         public TransactionServiceTest()
         {
@@ -52,10 +52,9 @@ namespace Bank.Core.Test.Services
         {
             //Arrange
             Transaction actual = null;
-            _transactionRepository.Setup(x => x.AddAsync(It.IsAny<Transaction>())).Callback<Transaction>(transaction =>
-            {
-                actual = transaction;
-            });
+            _transactionRepository.Setup(x => x.AddAsync(It.IsAny<Transaction>()))
+                .Callback<Transaction>(transaction => { actual = transaction; })
+                .ReturnsAsync(() => actual);
 
             _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
             _accountRepository.Setup(x => x.UpdateAsync(_account));
@@ -68,7 +67,6 @@ namespace Bank.Core.Test.Services
                 AccountId = _account.AccountId,
                 Amount = amount
             };
-
 
             //Act
             var sut = new TransactionService(_mapper, _transactionRepository.Object, _accountRepository.Object);
@@ -97,10 +95,9 @@ namespace Bank.Core.Test.Services
         {
             //Arrange
             Transaction actual = null;
-            _transactionRepository.Setup(x => x.AddAsync(It.IsAny<Transaction>())).Callback<Transaction>(transaction =>
-            {
-                actual = transaction;
-            });
+            _transactionRepository.Setup(x => x.AddAsync(It.IsAny<Transaction>()))
+                .Callback<Transaction>(transaction => { actual = transaction; })
+                .ReturnsAsync(() => actual);
 
             _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
             _accountRepository.Setup(x => x.UpdateAsync(_account));
@@ -147,10 +144,9 @@ namespace Bank.Core.Test.Services
             };
 
             List<Transaction> transactions = new List<Transaction>();
-            _transactionRepository.Setup(x => x.AddAsync(It.IsAny<Transaction>())).Callback<Transaction>(transaction =>
-            {
-                transactions.Add(transaction);
-            });
+            _transactionRepository.Setup(x => x.AddAsync(It.IsAny<Transaction>()))
+                .Callback<Transaction>(transaction => { transactions.Add(transaction); })
+                .ReturnsAsync(() => transactions[0]);
 
             _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
             _accountRepository.Setup(x => x.GetByIdAsync(toAccount.AccountId)).ReturnsAsync(toAccount);
