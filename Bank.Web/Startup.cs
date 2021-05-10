@@ -46,6 +46,21 @@ namespace Bank.Web
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
 
             services.AddCoreServices();
+            services.AddTransient<IValidator<DepositViewModel>, DepositViewModelValidator>();
+            services.AddTransient<IValidator<TransferViewModel>, TransferViewModelValidator>();
+            services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
+            services.AddTransient<IValidator<UserRegisterViewModel>, UserRegisterViewModelValidator>();
+            services.AddTransient<IValidator<UserEditViewModel>, UserEditViewModelValidator>();
+
+            services.AddTransient<IValidator<CustomerBaseViewModel>, CustomerBaseViewModelValidator>();
+            services.AddTransient<IValidator<CustomerRegisterViewModel>, CustomerRegisterViewModelValidator>();
+            services.AddTransient<IValidator<CustomerEditViewModel>, CustomerEditViewModelValidator>();
+
+            services.AddTransient<IStatisticsService, StatisticsService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<IUserService, UserService>();
+
             services.AddDatabaseContext(Configuration);
             services.AddDataServices();
 

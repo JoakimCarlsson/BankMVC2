@@ -24,7 +24,7 @@ namespace Bank.API.Controllers
         [HttpGet]
         public async Task<ActionResult<TransactionDetailsListViewModel>> Get(int id, int limit, int offset)
         {
-            var model = await _transactionService.GetAmountByIdAsync(id, offset, limit).ConfigureAwait(false);
+            var model = await _transactionService.GetTransactions(id, offset, limit).ConfigureAwait(false);
             return Ok(model);
         }
     }

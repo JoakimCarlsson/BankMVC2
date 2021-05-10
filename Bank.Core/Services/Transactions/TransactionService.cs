@@ -50,6 +50,18 @@ namespace Bank.Core.Services.Transactions
             return model;
         }
 
+        public async Task<TransactionListViewModel> GetTransactions(int accountId, int offset, int limit)
+        {
+            var model = new TransactionListViewModel
+            {
+                Transactions = _mapper.Map<IEnumerable<TransactionDetailsViewModel>>(await _transactionRepository.ListAllByAccountIdAsync(accountId).Result
+                    .Skip(offset)
+                    .Take(limit).ToListAsync().ConfigureAwait(false)),
+            };
+
+            return model;
+        }
+
         public async Task<TransactionResultViewModel> SaveTransaction(TransactionBaseViewModel model)
         {
             return model switch

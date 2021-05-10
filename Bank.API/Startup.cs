@@ -36,6 +36,9 @@ namespace Bank.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCoreServices();
+
+            services.AddTransient<ITransactionService, TransactionService>();
+
             services.AddDatabaseContext(Configuration);
             services.AddDataServices();
 
