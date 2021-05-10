@@ -41,44 +41,18 @@ namespace Bank.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            //services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            //services.AddAutoMapper(typeof(Startup)); //Auto mapper
-
-            services.AddTransient<IValidator<DepositViewModel>, DepositViewModelValidator>();
-            services.AddTransient<IValidator<TransferViewModel>, TransferViewModelValidator>();
-            services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
-            services.AddTransient<IValidator<UserRegisterViewModel>, UserRegisterViewModelValidator>();
-            services.AddTransient<IValidator<UserEditViewModel>, UserEditViewModelValidator>();
-
-            services.AddTransient<IValidator<CustomerBaseViewModel>, CustomerBaseViewModelValidator>();
-            services.AddTransient<IValidator<CustomerRegisterViewModel>, CustomerRegisterViewModelValidator>();
-            services.AddTransient<IValidator<CustomerEditViewModel>, CustomerEditViewModelValidator>();
-
-            services.AddTransient<IStatisticsService, StatisticsService>();
-            services.AddTransient<ICustomerService, CustomerService>();
-            services.AddTransient<ITransactionService, TransactionService>();
-            services.AddTransient<IUserService, UserService>();
-
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
-            services.AddScoped<IDispositionRepository, DispositionRepository>();
 
-            services.AddCoreServices(); //bank.core
-            //services.AddDataServices(Configuration); //bank.data
+            services.AddCoreServices();
+            services.AddDatabaseContext(Configuration);
+            services.AddDataServices();
 
             services.AddResponseCaching();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews().AddFluentValidation();
-
-            //services.AddMvc()
-            //    .AddFluentValidation(fvc =>
-            //        fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
