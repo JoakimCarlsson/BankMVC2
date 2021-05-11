@@ -47,7 +47,6 @@ namespace Bank.Web
             services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
             services.AddTransient<IValidator<UserRegisterViewModel>, UserRegisterViewModelValidator>();
             services.AddTransient<IValidator<UserEditViewModel>, UserEditViewModelValidator>();
-
             services.AddTransient<IValidator<CustomerBaseViewModel>, CustomerBaseViewModelValidator>();
             services.AddTransient<IValidator<CustomerRegisterViewModel>, CustomerRegisterViewModelValidator>();
             services.AddTransient<IValidator<CustomerEditViewModel>, CustomerEditViewModelValidator>();

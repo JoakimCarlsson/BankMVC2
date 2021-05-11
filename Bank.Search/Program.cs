@@ -1,16 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Security.Authentication.ExtendedProtection;
+using System.Threading.Tasks;
 using Bank.Data;
 using Bank.Search.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using IAzureUpdater = Bank.AzureSearchService.Services.IAzureUpdater;
 
 namespace Bank.Search
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -23,11 +25,9 @@ namespace Bank.Search
             startup.ConfigureServices(serviceCollection);
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
-            //var updater = serviceProvider.GetRequiredService<IAzureUpdater>();
-            //updater.Run();
 
-            var searcher = serviceProvider.GetRequiredService<IAzureSearcher>();
-            searcher.Run();
+            var updater = serviceProvider.GetRequiredService<IAzureUpdater>();
+            await updater.RunCustomerUpdateBatchAsync().ConfigureAwait(false);
         }
     }
 }

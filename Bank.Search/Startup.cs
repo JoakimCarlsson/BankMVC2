@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bank.AzureSearchService;
 using Bank.Data;
 using Bank.Search.Azure;
 using Microsoft.Extensions.Configuration;
@@ -21,8 +22,7 @@ namespace Bank.Search
         {
             services.AddDataServices();
             services.AddDatabaseContext(Configuration);
-            services.AddTransient<IAzureUpdater, AzureUpdater>();
-            services.AddTransient<IAzureSearcher, AzureSearcher>();
+            services.AddAzureSearchService();
         }
     }
 }

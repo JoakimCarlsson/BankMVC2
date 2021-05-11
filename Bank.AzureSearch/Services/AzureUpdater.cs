@@ -1,33 +1,39 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Azure;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Indexes.Models;
 using Azure.Search.Documents.Models;
-using Bank.Data.Data;
+using Bank.AzureSearchService.AzureEntities;
 using Bank.Data.Models;
+using Bank.Data.Repositories.Customer;
 
-namespace Bank.Search.Azure
+namespace Bank.AzureSearchService.Services
 {
-    internal class AzureUpdater : IAzureUpdater
+    class AzureUpdater : IAzureUpdater
     {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly string _url = "https://bankmvc2search.search.windows.net";
+        private readonly ICustomerRepository _customerRepository;
+
+        private readonly string _url = "https://bankmvc2search.search.windows.net"; //todo, move me onto config.json, / appsettings.json.
         private readonly string _key = "F1CE54AA4F9E785A49F93980D29D00B2";
         private readonly string _indexName = "customers";
-        public AzureUpdater(ApplicationDbContext dbContext)
+
+        public AzureUpdater(ICustomerRepository customerRepository)
         {
-            _dbContext = dbContext;
+            _customerRepository = customerRepository;
         }
 
-        public void Run()
+        public async Task RunCustomerUpdateBatchAsync()
         {
-            CreateIndexIfNotExists();
+            await CreateIndexIfNotExistsAsync().ConfigureAwait(false);
 
             var searchClient = new SearchClient(new Uri(_url), _indexName, new AzureKeyCredential(_key));
             var batch = new IndexDocumentsBatch<CustomerInAzure>();
 
-            foreach (Customer customer in _dbContext.Customers)
+            var customers = await _customerRepository.ListAllAsync().ConfigureAwait(false);
+
+            foreach (Customer customer in customers)
             {
                 var customerInAzure = new CustomerInAzure
                 {
@@ -38,11 +44,9 @@ namespace Bank.Search.Azure
                 };
                 batch.Actions.Add(new IndexDocumentsAction<CustomerInAzure>(IndexActionType.MergeOrUpload, customerInAzure));
             }
-
-            IndexDocumentsResult result = searchClient.IndexDocuments(batch);
         }
 
-        private void CreateIndexIfNotExists()
+        private async Task CreateIndexIfNotExistsAsync()
         {
             var serviceEndPoint = new Uri(_url);
             var credential = new AzureKeyCredential(_key);
@@ -52,7 +56,7 @@ namespace Bank.Search.Azure
             var searchFields = fieldBuilder.Build(typeof(CustomerInAzure));
             var definition = new SearchIndex(_indexName, searchFields);
 
-            adminClient.CreateOrUpdateIndex(definition);
+            await adminClient.CreateOrUpdateIndexAsync(definition).ConfigureAwait(false);
         }
     }
 }
