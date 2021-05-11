@@ -1,9 +1,9 @@
-﻿using Bank.Core.Services.Transactions;
-using Bank.Core.ViewModels.Transactions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Bank.Core.Enums;
+using Bank.Web.Enums;
+using Bank.Web.Services.Transactions;
+using Bank.Web.ViewModels.Transactions;
 
 namespace Bank.Web.Controllers
 {

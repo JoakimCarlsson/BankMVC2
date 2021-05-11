@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Bank.Core.Services.User;
-using Bank.Core.ViewModels.User;
+using Bank.Web.Services.User;
+using Bank.Web.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 

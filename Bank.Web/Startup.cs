@@ -1,31 +1,24 @@
-using System.Reflection;
-using Bank.Core;
-using Bank.Core.Services.Customers;
-using Bank.Core.Services.Statistics;
-using Bank.Core.Services.Transactions;
-using Bank.Core.Services.User;
-using Bank.Core.Validators.Customer;
-using Bank.Core.Validators.Transfer;
-using Bank.Core.Validators.User;
-using Bank.Core.ViewModels.Customers;
-using Bank.Core.ViewModels.Transactions;
-using Bank.Core.ViewModels.User;
+using Bank.Data;
 using Bank.Data.Data;
+using Bank.Data.Repositories.Base;
+using Bank.Web.Services.Customers;
+using Bank.Web.Services.Statistics;
+using Bank.Web.Services.Transactions;
+using Bank.Web.Services.User;
+using Bank.Web.Validators.Customer;
+using Bank.Web.Validators.Transfer;
+using Bank.Web.Validators.User;
+using Bank.Web.ViewModels.Customers;
+using Bank.Web.ViewModels.Transactions;
+using Bank.Web.ViewModels.User;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Bank.Data;
-using Bank.Data.Repositories.Account;
-using Bank.Data.Repositories.Base;
-using Bank.Data.Repositories.Customer;
-using Bank.Data.Repositories.Disposition;
-using Bank.Data.Repositories.Transaction;
-using FluentValidation;
 
 namespace Bank.Web
 {
@@ -44,8 +37,11 @@ namespace Bank.Web
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
+            services.AddAutoMapper(typeof(Startup));
 
-            services.AddCoreServices();
+            services.AddDatabaseContext(Configuration);
+            services.AddDataServices();
+
             services.AddTransient<IValidator<DepositViewModel>, DepositViewModelValidator>();
             services.AddTransient<IValidator<TransferViewModel>, TransferViewModelValidator>();
             services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
@@ -61,8 +57,7 @@ namespace Bank.Web
             services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IUserService, UserService>();
 
-            services.AddDatabaseContext(Configuration);
-            services.AddDataServices();
+
 
             services.AddResponseCaching();
 

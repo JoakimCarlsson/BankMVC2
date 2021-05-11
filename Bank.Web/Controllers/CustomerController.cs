@@ -4,8 +4,8 @@ using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Bank.Core.Services.Customers;
-using Bank.Core.ViewModels.Customers;
+using Bank.Web.Services.Customers;
+using Bank.Web.ViewModels.Customers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Bank.Web.Controllers

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Bank.Core.Services.Statistics;
+using Bank.Web.Services.Statistics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.Web.Areas.ViewComponents.BankStatistics

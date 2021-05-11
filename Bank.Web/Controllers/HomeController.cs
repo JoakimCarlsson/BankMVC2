@@ -1,9 +1,9 @@
-﻿using Bank.Core.Services.Statistics;
-using Bank.Data.Models;
+﻿using Bank.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using Bank.Web.Services.Statistics;
 
 namespace Bank.Web.Controllers
 {
