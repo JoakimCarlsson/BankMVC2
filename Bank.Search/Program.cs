@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Authentication.ExtendedProtection;
 using System.Threading.Tasks;
 using Bank.Data;
+using Bank.Data.Models;
 using Bank.Search.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,8 +27,8 @@ namespace Bank.Search
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
-            var updater = serviceProvider.GetRequiredService<IAzureUpdater>();
-            await updater.RunCustomerUpdateBatchAsync().ConfigureAwait(false);
+            //var updater = serviceProvider.GetRequiredService<IAzureUpdater>();
+            //await updater.UpdateCustomer(new Customer()).ConfigureAwait(false);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Bank.AzureSearchService.Services;
+using Bank.AzureSearchService.Services.Search;
+using Bank.AzureSearchService.Services.Update;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bank.AzureSearchService
