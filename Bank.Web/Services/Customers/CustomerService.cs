@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Bank.AzureSearchService.Services;
 using Bank.AzureSearchService.Services.Search;
 using Bank.Data.Models;
 using Bank.Data.Repositories.Account;
@@ -20,14 +21,16 @@ namespace Bank.Web.Services.Customers
         private readonly IAccountRepository _accountRepository;
         private readonly IMapper _mapper;
         private readonly IAzureSearch _azureSearch;
+        private readonly IAzureUpdater _azureUpdater;
 
-        public CustomerService(ICustomerRepository customerRepository, IDispositionRepository dispositionRepository, IAccountRepository accountRepository, IMapper mapper, IAzureSearch azureSearch)
+        public CustomerService(ICustomerRepository customerRepository, IDispositionRepository dispositionRepository, IAccountRepository accountRepository, IMapper mapper, IAzureSearch azureSearch, IAzureUpdater azureUpdater)
         {
             _customerRepository = customerRepository;
             _dispositionRepository = dispositionRepository;
             _accountRepository = accountRepository;
             _mapper = mapper;
             _azureSearch = azureSearch;
+            _azureUpdater = azureUpdater;
         }
 
         //todo fix me pliz
@@ -142,13 +145,15 @@ namespace Bank.Web.Services.Customers
             };
 
             customer.Dispositions.Add(disposition);
+            await _azureUpdater.AddOrUpdateCustomerInAzure(customer);
             await _customerRepository.AddAsync(customer).ConfigureAwait(false);
         }
 
         private async Task SaveEditAsync(CustomerEditViewModel viewModel)
         {
-            var editedCustomer = _mapper.Map<Customer>(viewModel);
-            await _customerRepository.UpdateAsync(editedCustomer).ConfigureAwait(false);
+            var customer = _mapper.Map<Customer>(viewModel);
+            await _azureUpdater.AddOrUpdateCustomerInAzure(customer);
+            await _customerRepository.UpdateAsync(customer).ConfigureAwait(false);
         }
 
         private async Task<IEnumerable<AccountCustomerViewModel>> GetAccountsAsync(CustomerDetailsViewModel model)

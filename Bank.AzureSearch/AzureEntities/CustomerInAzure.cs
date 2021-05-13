@@ -9,7 +9,7 @@ namespace Bank.AzureSearchService.AzureEntities
 {
     class CustomerInAzure
     {
-        [SimpleField(IsKey = true, IsFilterable = true)]
+        [SimpleField(IsKey = true, IsFilterable = true, IsSortable = true)]
         public string Id { get; init; }
 
         [SearchableField(IsSortable = true)]

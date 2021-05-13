@@ -40,7 +40,9 @@
                 <table class="table table-hover table-sm">
                     <thead>
                         <tr>
-                            <th>Customer Id</th>
+                            <th>
+                                Customer Id
+                            </th>
                             <th scope="col">
                                 <a asp-controller="Customer" asp-action="Index" asp-route-sortField="Name" asp-route-sortOrder="@(Model.PagingViewModel.SortField == "Name" ? Model.PagingViewModel.OppositeSortOrder : "" )"
                                    asp-route-q="@Model.PagingViewModel.Q">
