@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Bank.AzureSearchService.Services;
 using Bank.AzureSearchService.Services.Search;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +23,11 @@ namespace Bank.Search
             Startup startup = new Startup(configuration);
             startup.ConfigureServices(serviceCollection);
 
-            // var serviceProvider = serviceCollection.BuildServiceProvider();
-            //
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            
+            var azureBatch = serviceProvider.GetRequiredService<IAzureUpdater>();
+            await azureBatch.RunCustomerUpdateBatchAsync();
+            
             // var search = serviceProvider.GetRequiredService<IAzureSearch>();
             // var result = await search.SearchCustomersAsync("Joakim Carlsson", "", 0, 10);
             //var updater = serviceProvider.GetRequiredService<IAzureUpdater>();

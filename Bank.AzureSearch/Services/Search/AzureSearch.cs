@@ -22,14 +22,15 @@ namespace Bank.AzureSearchService.Services.Search
         private readonly string _key = "F1CE54AA4F9E785A49F93980D29D00B2";
         private readonly string _indexName = "customers";
         
-        public async Task<AzureSearchResult> SearchCustomersAsync(string q, string orderBy, int offset, int limit)
+        public async Task<AzureSearchResult> SearchCustomersAsync(string q, string sortField, string sortOrder, int offset, int limit)
         {
-            
             var searchClient = new SearchClient(new Uri(_url), _indexName, new AzureKeyCredential(_key));
             
+            string orderBy = string.IsNullOrWhiteSpace(sortOrder) ? $"{sortField}" : $"{sortField} {sortOrder}";
+
             var searchParameters = new SearchOptions
             {
-                OrderBy = { orderBy },
+                OrderBy = {orderBy},
                 Skip = offset,
                 Size = limit,
                 IncludeTotalCount = true

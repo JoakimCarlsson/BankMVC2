@@ -6,6 +6,6 @@ namespace Bank.AzureSearchService.Services.Search
 {
     public interface IAzureSearch
     {
-        public Task<AzureSearchResult> SearchCustomersAsync(string q, string orderBy, int offset, int limit);
+        public Task<AzureSearchResult> SearchCustomersAsync(string q, string sortField,string sortOrder, int offset, int limit);
     }
 }

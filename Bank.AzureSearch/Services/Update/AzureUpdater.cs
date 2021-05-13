@@ -41,9 +41,11 @@ namespace Bank.AzureSearchService.Services.Update
                     City = customer.City,
                     GiveName = customer.Givenname,
                     Id = customer.CustomerId.ToString(),
-                    Surname = customer.Surname
+                    Surname = customer.Surname,
+                    Name = $"{customer.Givenname} {customer.Surname}",
+                    Address = customer.Streetaddress,
+                    NationalId = string.IsNullOrWhiteSpace(customer.NationalId) ? "" : customer.NationalId,
                 };
-                //Console.WriteLine($"Adding {customer.CustomerId} {customer.Givenname} {customer.Surname}");
                 batch.Actions.Add(new IndexDocumentsAction<CustomerInAzure>(IndexActionType.MergeOrUpload, customerInAzure));
             }
             var result = await searchClient.IndexDocumentsAsync(batch);
