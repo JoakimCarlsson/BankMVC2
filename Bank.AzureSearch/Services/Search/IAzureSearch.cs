@@ -1,12 +1,11 @@
-﻿namespace Bank.AzureSearchService.Services.Search
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading.Tasks;
+
+namespace Bank.AzureSearchService.Services.Search
 {
     public interface IAzureSearch
     {
-        
-    }
-
-    class AzureSearch : IAzureSearch
-    {
-        
+        public Task<AzureSearchResult> SearchCustomersAsync(string q, string orderBy, int offset, int limit);
     }
 }

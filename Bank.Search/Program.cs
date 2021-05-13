@@ -1,13 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Security.Authentication.ExtendedProtection;
+using System.Linq;
 using System.Threading.Tasks;
-using Bank.Data;
-using Bank.Data.Models;
-using Bank.Search.Azure;
+using Bank.AzureSearchService.Services.Search;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using IAzureUpdater = Bank.AzureSearchService.Services.IAzureUpdater;
 
 namespace Bank.Search
 {
@@ -25,8 +22,10 @@ namespace Bank.Search
             Startup startup = new Startup(configuration);
             startup.ConfigureServices(serviceCollection);
 
-            var serviceProvider = serviceCollection.BuildServiceProvider();
-
+            // var serviceProvider = serviceCollection.BuildServiceProvider();
+            //
+            // var search = serviceProvider.GetRequiredService<IAzureSearch>();
+            // var result = await search.SearchCustomersAsync("Joakim Carlsson", "", 0, 10);
             //var updater = serviceProvider.GetRequiredService<IAzureUpdater>();
             //await updater.UpdateCustomer(new Customer()).ConfigureAwait(false);
         }
