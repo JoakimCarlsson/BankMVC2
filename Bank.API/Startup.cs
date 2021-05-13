@@ -1,3 +1,6 @@
+using Bank.API.Services;
+using Bank.API.Services.Customer;
+using Bank.API.Services.Transactions;
 using Bank.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +25,11 @@ namespace Bank.API
         {
             services.AddDatabaseContext(Configuration);
             services.AddDataServices();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<ICustomerService, CustomerService>();
 
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bank.API", Version = "v1" });
