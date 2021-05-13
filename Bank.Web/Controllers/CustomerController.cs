@@ -29,9 +29,10 @@ namespace Bank.Web.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Index(string q, int page = 1, int pageSize = 50)
+        public async Task<IActionResult> Index(string q, string sortField, string sortOrder, int page = 1, int pageSize = 50)
         {
-            var model = await _customerService.GetPagedSearchAsync(q, page, pageSize).ConfigureAwait(false);
+            // var model = await _customerService.GetPagedSearchAsync(q, page, pageSize).ConfigureAwait(false);
+            var model = await _customerService.GetAzurePagedSearchAsync(q, sortField, sortOrder, page, pageSize).ConfigureAwait(false);
             return View(model);
         }
 

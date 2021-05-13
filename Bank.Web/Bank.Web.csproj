@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bank.AzureSearch\Bank.AzureSearchService.csproj" />
     <ProjectReference Include="..\Bank.Data\Bank.Data.csproj" />
   </ItemGroup>
 

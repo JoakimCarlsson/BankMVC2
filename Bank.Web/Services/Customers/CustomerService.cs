@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Bank.AzureSearchService.Services.Search;
 using Bank.Data.Models;
 using Bank.Data.Repositories.Account;
 using Bank.Data.Repositories.Customer;
@@ -18,13 +19,15 @@ namespace Bank.Web.Services.Customers
         private readonly IDispositionRepository _dispositionRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly IMapper _mapper;
+        private readonly IAzureSearch _azureSearch;
 
-        public CustomerService(ICustomerRepository customerRepository, IDispositionRepository dispositionRepository, IAccountRepository accountRepository, IMapper mapper)
+        public CustomerService(ICustomerRepository customerRepository, IDispositionRepository dispositionRepository, IAccountRepository accountRepository, IMapper mapper, IAzureSearch azureSearch)
         {
             _customerRepository = customerRepository;
             _dispositionRepository = dispositionRepository;
             _accountRepository = accountRepository;
             _mapper = mapper;
+            _azureSearch = azureSearch;
         }
 
         //todo fix me pliz
@@ -44,14 +47,14 @@ namespace Bank.Web.Services.Customers
         {
             if (page <= 0)
                 page = 1;
-
+            
             var result = await _customerRepository.GetPagedResponseAsync(page, pageSize, q).ConfigureAwait(false);
             var totalRows = await _customerRepository.GetQueryCount(q).ConfigureAwait(false);
-
+            
             var pageCount = (double)totalRows / pageSize;
             var currentRowCount = ((page - 1) * pageSize) + 1;
             var rowCount = currentRowCount + result.Count() - 1;
-
+            
             var model = new CustomerSearchListViewModel
             {
                 PagingViewModel = new PagingViewModel
@@ -65,6 +68,39 @@ namespace Bank.Web.Services.Customers
                     RowCount = rowCount
                 },
                 Customers = _mapper.Map<IEnumerable<CustomerSearchViewModel>>(result)
+            };
+            
+            return model;
+        }
+
+        public async Task<CustomerSearchListViewModel> GetAzurePagedSearchAsync(string q, string sortField, string sortOrder, int page, int pageSize)
+        {
+            if (page <= 0)
+                page = 1;
+
+            var tmpCustomerList = new List<Customer>();
+            
+            var offset = page == 1 ? 0 : page * pageSize;
+
+            var result = await _azureSearch.SearchCustomersAsync(q, sortField, sortOrder, offset, pageSize);
+            
+            foreach (var id in result.Ids)
+                tmpCustomerList.Add(await _customerRepository.GetByIdAsync(id));
+
+            var model = new CustomerSearchListViewModel()
+            {
+                PagingViewModel = new PagingViewModel
+                {
+                    Page = page,
+                    Q = q,
+                    PageSize = pageSize,
+                    MaxRowCount = (int) result.TotalRowCount, //todo, change to long on pageing view model.
+                    SortField = sortField,
+                    SortOrder = sortOrder,
+                    OppositeSortOrder = sortOrder == "asc" ? "desc" : "asc",
+                },
+                
+                Customers = _mapper.Map<IEnumerable<CustomerSearchViewModel>>(tmpCustomerList)
             };
 
             return model;

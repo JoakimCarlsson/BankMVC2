@@ -1,3 +1,4 @@
+using Bank.AzureSearchService;
 using Bank.Data;
 using Bank.Data.Data;
 using Bank.Data.Repositories.Base;
@@ -41,8 +42,9 @@ namespace Bank.Web
 
             services.AddDatabaseContext(Configuration);
             services.AddDataServices();
-
-            services.AddTransient<IValidator<DepositViewModel>, DepositViewModelValidator>();
+            services.AddAzureSearchService();
+            
+            services.AddTransient<IValidator<DepositViewModel>, DepositViewModelValidator>(); //todo fix me, should be possible. :-)
             services.AddTransient<IValidator<TransferViewModel>, TransferViewModelValidator>();
             services.AddTransient<IValidator<WithdrawViewModel>, WithdrawViewModelValidator>();
             services.AddTransient<IValidator<UserRegisterViewModel>, UserRegisterViewModelValidator>();
