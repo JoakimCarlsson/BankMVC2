@@ -5,9 +5,9 @@ using Bank.Data.Models;
 
 namespace Bank.API.Profiles
 {
-    public class MappingProfiles : Profile
+    public class TransactionProfiles : Profile
     {
-        public MappingProfiles()
+        public TransactionProfiles()
         {
             CreateMap<Transaction, TransactionDetailViewModel>();
         }
