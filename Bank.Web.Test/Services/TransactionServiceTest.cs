@@ -30,7 +30,7 @@ namespace Bank.Web.Test.Services
             if (_mapper != null) return;
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new MappingProfiles());
+                mc.AddProfile(new TransactionProfiles());
             });
 
             var mapper = mappingConfig.CreateMapper();
