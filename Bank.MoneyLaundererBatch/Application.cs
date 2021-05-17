@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bank.Data.Models;
+using Bank.MoneyLaundererBatch.ReportObjects;
 using Bank.MoneyLaundererBatch.Services;
 using Bank.MoneyLaundererBatch.Services.Email;
 using Bank.MoneyLaundererBatch.Services.MoneyLaunderer;
@@ -35,7 +37,10 @@ namespace Bank.MoneyLaundererBatch
                 var tmpReports = await _moneyLaundererService.GetTransactionsOverAmountAndTimeAsync(lastReportDate, country, 23000, 72);
                 
                 reports.AddRange(tmpReports);
-                await _emailService.SendReportEmailAsync(country, reports);
+                if (reports.Any())
+                {
+                    await _emailService.SendReportEmailAsync(country, reports);
+                }
 
             }
 
