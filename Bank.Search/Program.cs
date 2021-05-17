@@ -1,9 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Bank.AzureSearchService.Services;
-using Bank.AzureSearchService.Services.Search;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +12,7 @@ namespace Bank.Search
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(@"C:\Users\Joakim\source\repos\Bank\Bank.Search\config.json")//todo fix me path.
+                .AddJsonFile(@"C:\Users\Joakim\source\repos\Bank\Bank.Search\appsettings.json")//todo fix me path.
                 .Build();
 
             var serviceCollection = new ServiceCollection();
