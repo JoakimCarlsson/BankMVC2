@@ -46,7 +46,7 @@ namespace Bank.Web.Services.Statistics
 
             var customers = (from customer in _dbContext.Customers
                 let accounts = _dbContext.Dispositions.Include(a => a.Account)
-                    .Where(i => i.CustomerId == customer.CustomerId/* && i.Type == "OWNER"*/)
+                    .Where(i => i.CustomerId == customer.CustomerId && i.Type == "OWNER")
                     .Select(i => i.Account)
                     .ToList()
                 where accounts.Count != 0

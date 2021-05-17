@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using  System.IO;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,7 +7,7 @@ namespace Bank.MoneyLaundererBatch
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -19,6 +20,7 @@ namespace Bank.MoneyLaundererBatch
             startup.ConfigureServices(serviceCollection);
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
+            await serviceProvider.GetRequiredService<Application>().RunAsync();
         }
     }
 }

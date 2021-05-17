@@ -1,4 +1,5 @@
 using Bank.Data;
+using Bank.MoneyLaundererBatch.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,9 @@ namespace Bank.MoneyLaundererBatch
         {
             services.AddDataServices();
             services.AddDatabaseContext(Configuration);
+            
+            services.AddSingleton(typeof(Application));
+            services.AddTransient<IMoneyLaundererService, MoneyLaundererService>();
         }
     }
 }
