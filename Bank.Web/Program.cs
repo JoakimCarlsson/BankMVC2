@@ -17,7 +17,7 @@ namespace Bank.Web
                 var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
                 var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
-                DataInitializer.SeedData(dbContext, userManager, roleManager);
+                DataInitializer.SeedData(dbContext, userManager, roleManager).GetAwaiter().GetResult();
             }
 
             host.Run();

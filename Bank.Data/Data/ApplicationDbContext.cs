@@ -10,6 +10,7 @@ namespace Bank.Data.Data
         {
         }
 
+        public virtual DbSet<MoneyLaunderingReport> MoneyLaunderingReports{ get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Card> Cards { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }

@@ -1,43 +1,46 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bank.Data.Data
 {
     public class DataInitializer
     {
-        public static void SeedData(ApplicationDbContext applicationDbContext, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedData(ApplicationDbContext applicationDbContext, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            SeedRoles(roleManager);
-            SeedUsers(userManager);
+            await applicationDbContext.Database.MigrateAsync().ConfigureAwait(false);
+            await SeedRoles(roleManager).ConfigureAwait(false);
+            await SeedUsers(userManager).ConfigureAwait(false);
         }
 
-        private static void SeedRoles(RoleManager<IdentityRole> roleManager)
+        private static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
-            AddNewRole(roleManager, "Admin");
-            AddNewRole(roleManager, "Cashier");
+            await AddNewRole(roleManager, "Admin").ConfigureAwait(false);
+            await AddNewRole(roleManager, "Cashier").ConfigureAwait(false);
         }
 
-        private static void SeedUsers(UserManager<IdentityUser> userManager)
+        private static async Task SeedUsers(UserManager<IdentityUser> userManager)
         {
-            AddNewUser(userManager, "stefan.holmberg@systementor.se", "Hejsan123#", "Admin");
-            AddNewUser(userManager, "stefan.holmberg@nackademin.se", "Hejsan123#", "Cashier");
+            await AddNewUser(userManager, "stefan.holmberg@systementor.se", "Hejsan123#", "Admin").ConfigureAwait(false);
+            await AddNewUser(userManager, "stefan.holmberg@nackademin.se", "Hejsan123#", "Cashier").ConfigureAwait(false);
         }
 
-        private static void AddNewUser(UserManager<IdentityUser> userManager, string email, string password, string role)
+        private static async Task AddNewUser(UserManager<IdentityUser> userManager, string email, string password, string role)
         {
-            if (userManager.FindByEmailAsync(email).Result != null) return;
+            if (await userManager.FindByEmailAsync(email).ConfigureAwait(false) != null) return;
 
             IdentityUser user = new IdentityUser { UserName = email, Email = email, EmailConfirmed = true };
-            IdentityResult result = userManager.CreateAsync(user, password).Result;
+            var result = await userManager.CreateAsync(user, password).ConfigureAwait(false);
 
             if (result.Succeeded)
                 userManager.AddToRoleAsync(user, role).Wait();
         }
 
-        private static void AddNewRole(RoleManager<IdentityRole> roleManager, string roleName)
+        private static async Task AddNewRole(RoleManager<IdentityRole> roleManager, string roleName)
         {
-            if (roleManager.RoleExistsAsync(roleName).Result) return;
+            if (await roleManager.RoleExistsAsync(roleName).ConfigureAwait(false)) return;
             IdentityRole role = new IdentityRole { Name = roleName };
-            IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            IdentityResult roleResult = await roleManager.CreateAsync(role).ConfigureAwait(false);
         }
     }
 }
