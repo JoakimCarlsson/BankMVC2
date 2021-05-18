@@ -29,8 +29,8 @@ namespace Bank.MoneyLaundererBatch.Services.Report
             if (!reports.Any())
                 return DateTime.Now;
 
-            var lastReport = await reports.FirstAsync();
-            return lastReport.EndDate;
+            var lastReport = await reports.OrderByDescending(i => i.Id).FirstAsync();
+            return lastReport.EndDate.Date;
         }
     }
 }
