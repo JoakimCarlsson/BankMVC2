@@ -96,10 +96,5 @@ namespace Bank.Web.Controllers
 
             return View(model);
         }
-
-        public IActionResult Index()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

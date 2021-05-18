@@ -2,6 +2,7 @@ using Bank.AzureSearchService;
 using Bank.Data;
 using Bank.Data.Data;
 using Bank.Data.Repositories.Base;
+using Bank.Web.Services.Account;
 using Bank.Web.Services.Customers;
 using Bank.Web.Services.Statistics;
 using Bank.Web.Services.Transactions;
@@ -57,8 +58,7 @@ namespace Bank.Web
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IUserService, UserService>();
-
-
+            services.AddTransient<IAccountService, AccountService>();
 
             services.AddResponseCaching();
 
