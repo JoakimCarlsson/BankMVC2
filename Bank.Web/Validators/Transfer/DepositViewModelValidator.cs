@@ -24,8 +24,8 @@ namespace Bank.Web.Validators.Transfer
             RuleFor(a => a.Amount)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
-                .GreaterThan(0).WithMessage("{PropertyName} can't be less or equal to 0.");
-
+                .GreaterThan(0).WithMessage("{PropertyName} can't be less or equal to 0.")
+                .ScalePrecision(2, int.MaxValue);
         }
 
         private async Task<bool> AccountIdExists(int id, CancellationToken token)

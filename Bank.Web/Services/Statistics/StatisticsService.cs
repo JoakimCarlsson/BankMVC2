@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -42,6 +44,8 @@ namespace Bank.Web.Services.Statistics
         //TODO FIX ME
         public async Task<CountryStatisticsViewModel> GetCountryStatisticsAsync()
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             var model = new CountryStatisticsViewModel {Countries = new List<Item>()};
 
             var customers = (from customer in _dbContext.Customers

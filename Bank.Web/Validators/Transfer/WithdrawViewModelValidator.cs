@@ -24,7 +24,8 @@ namespace Bank.Web.Validators.Transfer
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .GreaterThan(0).WithMessage("{PropertyName} can't be less or equal to 0.")
-                .MustAsync(HaveCoverage).WithMessage("The account does not have enough money to do this transaction");
+                .MustAsync(HaveCoverage).WithMessage("The account does not have enough money to do this transaction")
+                .ScalePrecision(2, int.MaxValue);
         }
 
         //TODO, refactor me.
