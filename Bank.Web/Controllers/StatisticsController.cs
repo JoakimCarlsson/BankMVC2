@@ -18,7 +18,7 @@ namespace Bank.Web.Controllers
             _statisticsService = statisticsService;
         }
 
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 60, VaryByQueryKeys = new[] { "country" })]
         public async Task<IActionResult> Index(string country)
         {
             var model = await _statisticsService.GetTopCustomersByCountry(10, country).ConfigureAwait(false);
