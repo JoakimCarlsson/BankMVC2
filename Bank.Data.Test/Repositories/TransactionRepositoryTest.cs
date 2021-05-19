@@ -154,7 +154,8 @@ namespace Bank.Data.Test.Repositories
             var dbContext = new ApplicationDbContext(options);
 
             var fixture = new Fixture();
-            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior()); 
             dbContext.AddRange(fixture.CreateMany<Transaction>(20));
             dbContext.SaveChanges();
 

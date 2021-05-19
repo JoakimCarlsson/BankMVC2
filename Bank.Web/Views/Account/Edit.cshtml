@@ -1,0 +1,66 @@
+﻿@model Bank.Web.ViewModels.Accounts.AccountEditViewModel
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Manage Account</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="col-md-4  mx-auto">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Dispositions</h3>
+        </div>
+            <div class="card-body p-0">
+                <table class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th style="width: 10px">Id</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        @* <th></th> *@
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var customer in Model.Disponents)
+                    {
+                        <tr>
+                            <td>@customer.CustomerId</td>
+                            <td>@customer.SurName @customer.GivenName</td>
+                            <td>@customer.Type</td>
+                            @* @if (customer.Type != "OWNER") *@
+                            @* { *@
+                            @*     <td> *@
+                            @*         <a class="btn btn-block btn-secondary btn-xs">Remove</a> *@
+                            @*     </td> *@
+                            @* } *@
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+        <form asp-controller="Account" , asp-action="Edit" method="post">
+            <input asp-for="AccountId" type="hidden"/>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Add/Remove Customer ID: </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-money-bill-alt"></i></span>
+                        </div>
+                        <input type="text" class="form-control" asp-for="NewCustomerId">
+                        <span asp-validation-for="NewCustomerId" class="text-danger validation-summary-errors"></span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-secondary">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

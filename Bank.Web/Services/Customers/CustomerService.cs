@@ -33,7 +33,6 @@ namespace Bank.Web.Services.Customers
             _azureUpdater = azureUpdater;
         }
 
-        //todo fix me pliz
         public async Task<CustomerDetailsViewModel> GetByIdAsync(int id)
         {
             var result = await _customerRepository.GetByIdAsync(id).ConfigureAwait(false);
@@ -130,7 +129,7 @@ namespace Bank.Web.Services.Customers
         private async Task RegisterNewUserAsync(CustomerRegisterViewModel viewModel)
         {
             var customer = _mapper.Map<Customer>(viewModel);
-            var account = new Account
+            var account = new Bank.Data.Models.Account
             {
                 Created = DateTime.Now,
                 Balance = 0,
@@ -159,7 +158,20 @@ namespace Bank.Web.Services.Customers
         private async Task<IEnumerable<AccountCustomerViewModel>> GetAccountsAsync(CustomerDetailsViewModel model)
         {
             var result = await _dispositionRepository.ListAllByCustomerIdAsync(model.CustomerId).ConfigureAwait(false);
-            return _mapper.Map<IEnumerable<AccountCustomerViewModel>>(result.Select(i => i.Account));
+            
+            var tmpList = new List<AccountCustomerViewModel>();
+            foreach (Disposition disposition in result)
+            {
+                tmpList.Add(new AccountCustomerViewModel
+                {
+                    AccountId = disposition.AccountId,
+                    Balance = disposition.Account.Balance,
+                    Type = disposition.Type,
+                });
+            }
+
+            return tmpList;
+            // return _mapper.Map<IEnumerable<AccountCustomerViewModel>>(result.Select(i => i.Account));
         }
     }
 }

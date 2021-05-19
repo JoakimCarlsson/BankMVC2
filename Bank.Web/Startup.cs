@@ -7,9 +7,11 @@ using Bank.Web.Services.Customers;
 using Bank.Web.Services.Statistics;
 using Bank.Web.Services.Transactions;
 using Bank.Web.Services.User;
+using Bank.Web.Validators.Accounts;
 using Bank.Web.Validators.Customer;
 using Bank.Web.Validators.Transfer;
 using Bank.Web.Validators.User;
+using Bank.Web.ViewModels.Accounts;
 using Bank.Web.ViewModels.Customers;
 using Bank.Web.ViewModels.Transactions;
 using Bank.Web.ViewModels.User;
@@ -53,6 +55,8 @@ namespace Bank.Web
             services.AddTransient<IValidator<CustomerBaseViewModel>, CustomerBaseViewModelValidator>();
             services.AddTransient<IValidator<CustomerRegisterViewModel>, CustomerRegisterViewModelValidator>();
             services.AddTransient<IValidator<CustomerEditViewModel>, CustomerEditViewModelValidator>();
+            
+            services.AddTransient<IValidator<AccountEditViewModel>, AccountEditViewModelValidator>();
 
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<ICustomerService, CustomerService>();
