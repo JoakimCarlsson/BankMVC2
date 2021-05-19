@@ -8,6 +8,7 @@ using Bank.Data.Data;
 using Bank.Data.Repositories.Account;
 using Bank.Data.Repositories.Customer;
 using Bank.Data.Repositories.Disposition;
+using Bank.Web.Services.Customers;
 using Bank.Web.ViewModels;
 using Bank.Web.ViewModels.Statistics;
 using Microsoft.EntityFrameworkCore;
@@ -17,17 +18,13 @@ namespace Bank.Web.Services.Statistics
     public class StatisticsService : IStatisticsService
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IAccountRepository _accountRepository;
         private readonly ICustomerRepository _customerRepository;
-        private readonly IDispositionRepository _dispositionRepository;
         private readonly IMapper _mapper;
 
-        public StatisticsService(ApplicationDbContext dbContext, IAccountRepository accountRepository, ICustomerRepository customerRepository, IDispositionRepository dispositionRepository, IMapper mapper)
+        public StatisticsService(ApplicationDbContext dbContext, ICustomerRepository customerRepository,  IMapper mapper)
         {
             _dbContext = dbContext;
-            _accountRepository = accountRepository;
             _customerRepository = customerRepository;
-            _dispositionRepository = dispositionRepository;
             _mapper = mapper;
         }
 
@@ -44,10 +41,8 @@ namespace Bank.Web.Services.Statistics
         //TODO FIX ME
         public async Task<CountryStatisticsViewModel> GetCountryStatisticsAsync()
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
             var model = new CountryStatisticsViewModel {Countries = new List<Item>()};
-
+            
             var customers = (from customer in _dbContext.Customers
                 let accounts = _dbContext.Dispositions.Include(a => a.Account)
                     .Where(i => i.CustomerId == customer.CustomerId && i.Type == "OWNER")
@@ -83,19 +78,17 @@ namespace Bank.Web.Services.Statistics
             return model;
         }
 
-        //todo double check me.
         public async Task<IEnumerable<TopCustomerViewModel>> GetTopCustomersByCountry(int amount, string country)
         {
-            var query = _dbContext.Dispositions
-                .Include(a => a.Account)
-                .Include(i => i.Customer)
-                .Where(i => i.Customer.Country == country && i.Type == "OWNER")
-                .OrderByDescending(i => i.Account.Balance)
-                .Take(amount)
-                .AsQueryable();
+            var customersQuery = await  _customerRepository.ListAllAsync();
+            var result = customersQuery
+                .Include(d => d.Dispositions)
+                .ThenInclude(a => a.Account)
+                .Where(customer => customer.Country == country)
+                .OrderByDescending(c => c.Dispositions.Sum(d => d.Account.Balance)) 
+                .Take(amount);
 
-            var model = _mapper.Map<IEnumerable<TopCustomerViewModel>>(query);
-            return model;
+            return _mapper.Map<IEnumerable<TopCustomerViewModel>>(result);
         }
     }
 }
