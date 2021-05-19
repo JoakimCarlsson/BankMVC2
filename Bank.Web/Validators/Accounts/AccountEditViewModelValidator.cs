@@ -29,7 +29,9 @@ namespace Bank.Web.Validators.Accounts
         private async Task<bool> MustNotBeOwner(AccountEditViewModel model, int customerId, CancellationToken token)
         {
             var users = await _accountService.GetAccountUsers(model.AccountId);
-            return users.First(i => i.CustomerId == customerId).Type != "OWNER";
+            var user = users.FirstOrDefault(i => i.CustomerId == customerId);
+
+            return user is null || user.Type != "OWNER";
         }
 
         private async Task<bool> MustExist(AccountEditViewModel model, int customerId, CancellationToken token)
