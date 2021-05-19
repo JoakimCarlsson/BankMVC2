@@ -40,6 +40,7 @@ namespace Bank.Web.Services.Statistics
 
         public async Task<CountryStatisticsViewModel> GetCountryStatisticsAsync()
         {
+            //
             var customersQuery = await _customerRepository.ListAllAsync();
             return new CountryStatisticsViewModel
             {
