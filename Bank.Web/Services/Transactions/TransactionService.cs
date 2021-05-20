@@ -103,25 +103,54 @@ namespace Bank.Web.Services.Transactions
             var fromAccount = await _accountRepository.GetByIdAsync(model.AccountId).ConfigureAwait(false);
             var toAccount = await _accountRepository.GetByIdAsync(model.ToAccountId).ConfigureAwait(false);
 
-            var fromTransaction = new Transaction
-            {
-                Amount = -model.Amount,
-                Operation = "Transfer to another account.",
-                Type = "Credit",
-                Date = DateTime.Now,
-                AccountId = model.AccountId,
-                Balance = fromAccount.Balance -= model.Amount,
-            };
+            Transaction fromTransaction;
+            Transaction toTransaction;
 
-            var toTransaction = new Transaction
+            if (model.ToAnotherBank)
             {
-                Amount = model.Amount,
-                Operation = "Transfer from another account.",
-                Type = "Credit",
-                Date = DateTime.Now,
-                AccountId = model.ToAccountId,
-                Balance = toAccount.Balance += model.Amount,
-            };
+                fromTransaction = new Transaction
+                {
+                    Amount = -model.Amount,
+                    Operation = "Remittance to another Bank.",
+                    Type = "Credit",
+                    Date = DateTime.Now,
+                    AccountId = model.AccountId,
+                    Balance = fromAccount.Balance -= model.Amount,
+                };
+
+                toTransaction = new Transaction
+                {
+                    Amount = model.Amount,
+                    Operation = "Remittance from another Bank.",
+                    Type = "Credit",
+                    Date = DateTime.Now,
+                    AccountId = model.ToAccountId,
+                    Balance = toAccount.Balance += model.Amount,
+                };
+            }
+            else
+            {
+                fromTransaction = new Transaction
+                {
+                    Amount = -model.Amount,
+                    Operation = "Transfer to another account.",
+                    Type = "Credit",
+                    Date = DateTime.Now,
+                    AccountId = model.AccountId,
+                    Balance = fromAccount.Balance -= model.Amount,
+                };
+
+                toTransaction = new Transaction
+                {
+                    Amount = model.Amount,
+                    Operation = "Transfer from another account.",
+                    Type = "Credit",
+                    Date = DateTime.Now,
+                    AccountId = model.ToAccountId,
+                    Balance = toAccount.Balance += model.Amount,
+                };
+            }
+
 
             await _accountRepository.UpdateAsync(fromAccount).ConfigureAwait(false);
             await _accountRepository.UpdateAsync(toAccount).ConfigureAwait(false);

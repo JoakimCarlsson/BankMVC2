@@ -24,7 +24,9 @@
                     <label>From Account</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                            <span class="input-group-text">
+                                <i class="fas fa-id-card"></i>
+                            </span>
                         </div>
                         <input type="text" class="form-control" asp-for="AccountId">
                         <span asp-validation-for="AccountId" class="text-danger validation-summary-errors"></span>
@@ -34,7 +36,9 @@
                     <label>Too Account</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                            <span class="input-group-text">
+                                <i class="fas fa-id-card"></i>
+                            </span>
                         </div>
                         <input type="text" class="form-control" asp-for="ToAccountId">
                         <span asp-validation-for="ToAccountId" class="text-danger validation-summary-errors"></span>
@@ -44,11 +48,18 @@
                     <label>Amount</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-money-bill-alt"></i></span>
+                            <span class="input-group-text">
+                                <i class="fas fa-money-bill-alt"></i>
+                            </span>
                         </div>
                         <input type="text" class="form-control" asp-for="Amount">
                         <span asp-validation-for="Amount" class="text-danger validation-summary-errors"></span>
                     </div>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" asp-for="ToAnotherBank">
+                    <label class="form-check-label" for="exampleCheck1">Transfer to another bank</label>
+                    <span asp-validation-for="ToAnotherBank" class="text-danger validation-summary-errors"></span>
                 </div>
             </div>
             <div class="card-footer">
