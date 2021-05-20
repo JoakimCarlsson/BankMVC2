@@ -17,6 +17,7 @@ namespace Bank.Search
         {
             services.AddDataServices();
             services.AddDatabaseContext(Configuration);
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddAzureSearchService();
         }
     }

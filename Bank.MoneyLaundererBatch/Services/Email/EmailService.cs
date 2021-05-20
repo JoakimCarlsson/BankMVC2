@@ -5,15 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Bank.MoneyLaundererBatch.ReportObjects;
 using MailKit.Net.Smtp;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
 
 namespace Bank.MoneyLaundererBatch.Services.Email
 {
     class EmailService : IEmailService
     {
+        private readonly IConfiguration _config;
+
+        public EmailService(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public async Task SendReportEmailAsync(string country, IEnumerable<CustomerReport> reports)
         {
-            //testbanken
+            var host = _config.GetValue<string>("EmailService:Host");
+            var port = _config.GetValue<int>("EmailService:Port");
+            var userName = _config.GetValue<string>("EmailService:Username");
+            var password = _config.GetValue<string>("EmailService:Password");
 
             var message = FormateMessage(country, reports);
             
@@ -26,10 +37,10 @@ namespace Bank.MoneyLaundererBatch.Services.Email
             };
 
             using var client = new SmtpClient ();
-            await client.ConnectAsync ("smtp.mailtrap.io", 2525, false);
-            await client.AuthenticateAsync ("11a87d096f4a2b", "799ee125cfea76");
-            await client.SendAsync (mimeMessage);
-            await client.DisconnectAsync (true);
+            await client.ConnectAsync (host, port, false).ConfigureAwait(false);
+            await client.AuthenticateAsync (userName, password).ConfigureAwait(false);
+            await client.SendAsync (mimeMessage).ConfigureAwait(false);
+            await client.DisconnectAsync (true).ConfigureAwait(false);
         }
 
         private TextPart FormateMessage(string country, IEnumerable<CustomerReport> reports)

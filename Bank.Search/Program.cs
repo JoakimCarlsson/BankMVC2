@@ -12,7 +12,7 @@ namespace Bank.Search
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(@"C:\Users\Joakim\source\repos\Bank\Bank.Search\appsettings.json")//todo fix me path.
+                .AddJsonFile("appsettings.json")
                 .Build();
 
             var serviceCollection = new ServiceCollection();
@@ -23,12 +23,7 @@ namespace Bank.Search
             var serviceProvider = serviceCollection.BuildServiceProvider();
             
             var azureBatch = serviceProvider.GetRequiredService<IAzureUpdater>();
-            await azureBatch.RunCustomerUpdateBatchAsync();
-            
-            // var search = serviceProvider.GetRequiredService<IAzureSearch>();
-            // var result = await search.SearchCustomersAsync("Joakim Carlsson", "", 0, 10);
-            //var updater = serviceProvider.GetRequiredService<IAzureUpdater>();
-            //await updater.UpdateCustomer(new Customer()).ConfigureAwait(false);
+            await azureBatch.RunCustomerUpdateBatchAsync().ConfigureAwait(false);
         }
     }
 }

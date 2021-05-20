@@ -6,12 +6,23 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="appsettings - Copy.Development.json" />
+      <None Remove="appsettings - Copy.json" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="MailKit" Version="2.12.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
     </ItemGroup>
 
-    <ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
       <ProjectReference Include="..\Bank.Data\Bank.Data.csproj" />
     </ItemGroup>
 

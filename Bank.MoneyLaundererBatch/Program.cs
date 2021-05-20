@@ -9,9 +9,12 @@ namespace Bank.MoneyLaundererBatch
     {
         static async Task Main(string[] args)
         {
-            var configuration = new ConfigurationBuilder()
+            //https://benfoster.io/blog/how-to-configure-kestrel-urls-in-aspnet-core-rc2
+            //< ItemGroup >     < Content Include = "appsettings.json" >       < CopyToOutputDirectory > PreserveNewest </ CopyToOutputDirectory >     </ Content >   </ ItemGroup >
+
+               var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(@"C:\Users\Joakim\source\repos\Bank\Bank.MoneyLaundererBatch\appsettings.json")//todo fix me path.
+                .AddJsonFile("appsettings.json")
                 .Build();
 
             var serviceCollection = new ServiceCollection();

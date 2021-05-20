@@ -22,6 +22,8 @@ namespace Bank.MoneyLaundererBatch
             services.AddDatabaseContext(Configuration);
             
             services.AddSingleton(typeof(Application));
+            services.AddSingleton<IConfiguration>(Configuration);
+
             services.AddTransient<IMoneyLaundererService, MoneyLaundererService>();
             services.AddTransient<IReportService, ReportService>();
             services.AddTransient<IEmailService, EmailService>();

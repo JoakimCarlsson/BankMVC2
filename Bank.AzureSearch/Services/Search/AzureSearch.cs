@@ -6,21 +6,23 @@ using Azure;
 using Azure.Search.Documents;
 using Bank.AzureSearchService.AzureEntities;
 using Bank.Data.Repositories.Customer;
+using Microsoft.Extensions.Configuration;
 
 namespace Bank.AzureSearchService.Services.Search
 {
     internal class AzureSearch : IAzureSearch
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly string _url;
+        private readonly string _key;
+        private readonly string _indexName;
 
-        public AzureSearch(ICustomerRepository customerRepository)
+        public AzureSearch(IConfiguration configuration)
         {
-            _customerRepository = customerRepository;
+            _url = configuration.GetValue<string>("AzureSearch:Url");
+            _key = configuration.GetValue<string>("AzureSearch:Key");
+            _indexName = configuration.GetValue<string>("AzureSearch:IndexName");
         }
-        
-        private readonly string _url = "https://bankmvc2search.search.windows.net"; //todo move me too appsettings.json
-        private readonly string _key = "F1CE54AA4F9E785A49F93980D29D00B2";
-        private readonly string _indexName = "customers";
+
         
         public async Task<AzureSearchResult> SearchCustomersAsync(string q, string sortField, string sortOrder, int offset, int limit)
         {
