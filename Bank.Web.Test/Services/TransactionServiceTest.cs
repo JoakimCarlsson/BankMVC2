@@ -132,7 +132,7 @@ namespace Bank.Web.Test.Services
         [Theory]
         [InlineData(400)]
         [InlineData(600)]
-        public async Task ShouldSaveTransferTransactions(int amount)
+        public async Task ShouldSaveInternalBankTransferTransactions(int amount)
         {
             //Arrange
             var toAccount = new Account
@@ -158,6 +158,7 @@ namespace Bank.Web.Test.Services
             {
                 AccountId = _account.AccountId,
                 ToAccountId = toAccount.AccountId,
+                ToAnotherBank = false,
                 Amount = amount,
             };
 
@@ -182,6 +183,67 @@ namespace Bank.Web.Test.Services
 
             transactions[1].ShouldNotBeNull();
             transactions[1].Operation.ShouldBeEquivalentTo("Transfer from another account.");
+            transactions[1].Type.ShouldBeEquivalentTo("Credit");
+            transactions[1].Date.ToString().ShouldBeEquivalentTo(DateTime.Now.ToString());
+            transactions[1].Amount.ShouldBeEquivalentTo(model.Amount);
+            transactions[1].AccountId.ShouldBeEquivalentTo(model.ToAccountId);
+            transactions[1].Balance.ShouldBeEquivalentTo(toAccount.Balance);
+        }
+        
+        [Theory]
+        [InlineData(400)]
+        [InlineData(600)]
+        public async Task ShouldSaveOutstandingBankTransferTransactions(int amount)
+        {
+            //Arrange
+            var toAccount = new Account
+            {
+                AccountId = 1,
+                Balance = 1000
+            };
+
+            List<Transaction> transactions = new List<Transaction>();
+            _transactionRepository.Setup(x => x.AddAsync(It.IsAny<Transaction>()))
+                .Callback<Transaction>(transaction => { transactions.Add(transaction); })
+                .ReturnsAsync(() => transactions[0]);
+
+            _accountRepository.Setup(x => x.GetByIdAsync(_account.AccountId)).ReturnsAsync(_account);
+            _accountRepository.Setup(x => x.GetByIdAsync(toAccount.AccountId)).ReturnsAsync(toAccount);
+            _accountRepository.Setup(x => x.UpdateAsync(_account));
+            _accountRepository.Setup(x => x.UpdateAsync(toAccount));
+
+            var configuration = new MapperConfiguration(cfg => cfg.CreateMap<WithdrawViewModel, Transaction>().IgnoreAllNonExisting());
+            configuration.AssertConfigurationIsValid();
+
+            var model = new TransferViewModel()
+            {
+                AccountId = _account.AccountId,
+                ToAccountId = toAccount.AccountId,
+                ToAnotherBank = true,
+                Amount = amount,
+            };
+
+            //Act
+            var sut = new TransactionService(_mapper, _transactionRepository.Object, _accountRepository.Object);
+            await sut.SaveTransaction(model).ConfigureAwait(false);
+
+            //Assert
+            _transactionRepository.Verify(x => x.AddAsync(It.IsAny<Transaction>()), Times.Exactly(2));
+            _accountRepository.Verify(x => x.GetByIdAsync(It.IsAny<int>()), Times.Exactly(2));
+            _accountRepository.Verify(x => x.UpdateAsync(It.IsAny<Account>()), Times.Exactly(2));
+
+            transactions.Count.ShouldBeEquivalentTo(2);
+
+            transactions[0].ShouldNotBeNull();
+            transactions[0].Operation.ShouldBeEquivalentTo("Remittance to another Bank.");
+            transactions[0].Type.ShouldBeEquivalentTo("Credit");
+            transactions[0].Date.ToString().ShouldBeEquivalentTo(DateTime.Now.ToString());
+            transactions[0].Amount.ShouldBeEquivalentTo(-model.Amount);
+            transactions[0].AccountId.ShouldBeEquivalentTo(model.AccountId);
+            transactions[0].Balance.ShouldBeEquivalentTo(_account.Balance);
+
+            transactions[1].ShouldNotBeNull();
+            transactions[1].Operation.ShouldBeEquivalentTo("Remittance from another Bank.");
             transactions[1].Type.ShouldBeEquivalentTo("Credit");
             transactions[1].Date.ToString().ShouldBeEquivalentTo(DateTime.Now.ToString());
             transactions[1].Amount.ShouldBeEquivalentTo(model.Amount);
