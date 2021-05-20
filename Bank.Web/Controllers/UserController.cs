@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Bank.Web.Services.User;
 using Bank.Web.ViewModels.User;
@@ -61,10 +62,20 @@ namespace Bank.Web.Controllers
             {
                 await _userService.SaveUserAsync(model).ConfigureAwait(false);
                 return RedirectToAction(nameof(Index));
-                //todo maybe implement toasify, maybe.
             }
             model.Roles = await _userService.GetAllRolesAsync().ConfigureAwait(false);
             return View(model);
+        }
+
+        public async Task<IActionResult> Delete(string userId)
+        {
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (id != userId)
+            {
+                await _userService.DeleteUserAsync(userId);
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

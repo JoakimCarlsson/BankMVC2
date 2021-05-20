@@ -1,4 +1,5 @@
-﻿@model Bank.Web.ViewModels.User.UserListViewModel
+﻿@using System.Security.Claims
+@model Bank.Web.ViewModels.User.UserListViewModel
 
 @{
     ViewData["Title"] = "Stuff";
@@ -14,7 +15,7 @@
     </div>
 </section>
 
-<div class="col-md-12">
+<div class="col-md-10">
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">All Users</h3>
@@ -36,6 +37,7 @@
                         <th>Email Confirmed</th>
                         <th>Roles</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,7 +51,18 @@
                                 @foreach (var role in user.Roles)
                                 {<a>@role, </a>}
                             </th>
-                            <td><a class="btn btn-block btn-secondary btn-xs" asp-controller="User" asp-action="Edit" asp-route-Id="@user.Id">Edit</a></td>
+                            <td>
+                                <a class="btn btn-block btn-secondary btn-xs" asp-controller="User" asp-action="Edit" asp-route-Id="@user.Id">Edit</a>
+                            </td>
+                            
+                            @if(User.FindFirstValue(ClaimTypes.NameIdentifier) != user.Id)
+                            {
+                            <form asp-action="Delete" asp-route-userId="@user.Id" method="post">
+                                <td>
+                                    <button class="btn btn-block btn-danger btn-xs">Remove</button>
+                                </td>
+                            </form>
+                            }
                         </tr>
                     }
                 </tbody>

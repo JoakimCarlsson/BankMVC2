@@ -95,6 +95,12 @@ namespace Bank.Web.Services.User
             }
         }
 
+        public async Task DeleteUserAsync(string userId)
+        {
+            var user = await _userManager.Users.FirstAsync(i => i.Id == userId);
+            await _userManager.DeleteAsync(user).ConfigureAwait(false);
+        }
+
         private async Task RegisterNewUserAsync(UserRegisterViewModel model)
         {
             var user = new IdentityUser { UserName = model.Email, Email = model.Email, EmailConfirmed = true };

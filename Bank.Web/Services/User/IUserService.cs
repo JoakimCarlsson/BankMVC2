@@ -14,5 +14,6 @@ namespace Bank.Web.Services.User
         public Task<List<SelectListItem>> GetActiveUserRoles(string id);
         public Task<List<string>> GetAllRolesAsync();
         public Task SaveUserAsync(UserBaseViewModel model);
+        public Task DeleteUserAsync(string userId);
     }
 }
