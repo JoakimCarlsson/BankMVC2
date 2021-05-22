@@ -42,6 +42,29 @@ namespace Bank.MoneyLaundererBatch.Services.MoneyLaunderer
                 }).ToListAsync().ConfigureAwait(false);
         }
 
+        public async Task<List<CustomerReport>> GetTransactionsLessThanAmountAsync(DateTime date, string country, decimal amount)
+        {
+            var customers = await _customerRepository.ListAllAsync();
+            return await customers
+                .Where(c => c.Country == country && c.Dispositions.Any(d => d.Type == "OWNER" && d.Account.Transactions.Any(t => -t.Amount > amount && t.Date == date)))
+                .Select(c => new CustomerReport
+                {
+                    Id = c.CustomerId,
+                    Name = $"{c.Givenname} {c.Surname}",
+                    Accounts = c.Dispositions.Select(d => new AccountReport
+                    {
+                        Id = d.AccountId,
+                        Transactions = d.Account.Transactions.Where(t => -t.Amount > amount && t.Date == date)
+                            .Select(t => new TransactionReport
+                            {
+                                Id = t.TransactionId,
+                                Date = t.Date,
+                                Amount = t.Amount
+                            })
+                    })
+                }).ToListAsync().ConfigureAwait(false);
+        }
+
         public async Task<List<CustomerReport>> GetTransactionsOverAmountAndTimeAsync(DateTime date, string country, decimal amount, int hours)
         {
             var time = date.AddHours(hours * -1);
@@ -59,6 +82,40 @@ namespace Bank.MoneyLaundererBatch.Services.MoneyLaunderer
                         .Where(a => a.Account.Transactions
                             .Where(t => t.Date <= date && t.Date >= time)
                             .Sum(t => t.Amount) > amount)
+                        .Select(d => new AccountReport
+                        {
+                            Id = d.Account.AccountId,
+                            Transactions = d.Account.Transactions
+                                .Where(t => t.Date <= date && t.Date >= time)
+                                .Select(t => new TransactionReport()
+                                {
+                                    Id = t.TransactionId,
+                                    Date = t.Date,
+                                    Amount = t.Amount
+                                })
+                        })
+                })
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
+        public async Task<List<CustomerReport>> GetTransactionsLessThanAmountAndTimeAsync(DateTime date, string country, decimal amount, int hours)
+        {
+            var time = date.AddHours(hours * -1);
+            
+            var customers = await _customerRepository.ListAllAsync();
+            
+            return await customers.Where(c => c.Country == country && c.Dispositions.Any(d => d.Account.Transactions
+                    .Where(t => t.Date <= date && t.Date >= time)
+                    .Sum(t => -t.Amount) > amount))
+                .Select(c => new CustomerReport
+                {
+                    Id = c.CustomerId,
+                    Name = $"{c.Givenname} {c.Surname}",
+                    Accounts = c.Dispositions
+                        .Where(a => a.Account.Transactions
+                            .Where(t => t.Date <= date && t.Date >= time)
+                            .Sum(t => -t.Amount) > amount)
                         .Select(d => new AccountReport
                         {
                             Id = d.Account.AccountId,

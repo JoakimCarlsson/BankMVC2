@@ -27,7 +27,8 @@ namespace Bank.Data.Test.Repositories
             var transactions = fixture.Build<Transaction>()
                 .With(x => x.AccountId, 1)
                 .Without(i => i.TransactionId)
-                .Without(i => i.AccountNavigation).CreateMany<Transaction>(5);
+                .Without(i => i.AccountNavigation)
+                .CreateMany<Transaction>(5); 
 
             await context.AddRangeAsync(transactions).ConfigureAwait(false);
 

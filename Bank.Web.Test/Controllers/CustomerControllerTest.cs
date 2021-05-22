@@ -56,5 +56,15 @@ namespace Bank.Web.Test.Controllers
             actual.ShouldNotBeNull();
             actual.ViewName.ShouldBeEquivalentTo("_Error");
         }
+
+        [Fact]
+        public async Task CustomerDetailsShouldMatchRealCustomerInformation()
+        {
+            //Arrange
+                    
+            //Act
+
+            //Assert
+        }
     }
 }

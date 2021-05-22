@@ -28,20 +28,22 @@ namespace Bank.MoneyLaundererBatch
         {
             var moneyLaunderingReport = new MoneyLaunderingReport {StartDate = DateTime.Now};
             var lastReportDate = await _reportService.GetLastRanTimeAsync();
-            
+            var checkDate = lastReportDate.AddDays(1);
+
             var countries = await _moneyLaundererService.GetCountries();
-            
+            var reports = new List<CustomerReport>();
             foreach (string country in countries)
             {
-                var reports  = await _moneyLaundererService.GetTransactionsOverAmountAsync(lastReportDate, country, 15000);
-                var tmpReports = await _moneyLaundererService.GetTransactionsOverAmountAndTimeAsync(lastReportDate, country, 23000, 72);
+                reports.AddRange(await _moneyLaundererService.GetTransactionsOverAmountAsync(checkDate, country, 15000));
+                reports.AddRange(await _moneyLaundererService.GetTransactionsOverAmountAndTimeAsync(checkDate, country, 23000, 72));
+                reports.AddRange(await _moneyLaundererService.GetTransactionsLessThanAmountAsync(checkDate, country, 15000));
+                reports.AddRange(await _moneyLaundererService.GetTransactionsLessThanAmountAndTimeAsync(checkDate, country, 23000, 72));
                 
-                reports.AddRange(tmpReports);
                 if (reports.Any())
                 {
                     await _emailService.SendReportEmailAsync(country, reports);
                 }
-
+                reports.Clear();
             }
 
             await _reportService.SaveReportAsync(moneyLaunderingReport);

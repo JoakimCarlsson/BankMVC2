@@ -9,7 +9,9 @@ namespace Bank.MoneyLaundererBatch.Services.MoneyLaunderer
     {
         public Task<IEnumerable<string>> GetCountries();
         public Task<List<CustomerReport>> GetTransactionsOverAmountAsync(DateTime date, string country, decimal amount);
+        public Task<List<CustomerReport>> GetTransactionsLessThanAmountAsync(DateTime date, string country, decimal amount);
         public Task<List<CustomerReport>> GetTransactionsOverAmountAndTimeAsync(DateTime date, string country, decimal amount, int hours);
+        public Task<List<CustomerReport>> GetTransactionsLessThanAmountAndTimeAsync(DateTime date, string country, decimal amount, int hours);
         
     }
 }
