@@ -45,36 +45,6 @@ namespace Bank.Web.Services.Customers
             return model;
         }
 
-        public async Task<CustomerSearchListViewModel> GetPagedSearchAsync(string q, int page, int pageSize)
-        {
-            if (page <= 0)
-                page = 1;
-            
-            var result = await _customerRepository.GetPagedResponseAsync(page, pageSize, q).ConfigureAwait(false);
-            var totalRows = await _customerRepository.GetQueryCount(q).ConfigureAwait(false);
-            
-            var pageCount = (double)totalRows / pageSize;
-            var currentRowCount = ((page - 1) * pageSize) + 1;
-            var rowCount = currentRowCount + result.Count() - 1;
-            
-            var model = new CustomerSearchListViewModel
-            {
-                PagingViewModel = new PagingViewModel
-                {
-                    Page = page,
-                    Q = q,
-                    PageSize = pageSize,
-                    MaxRowCount = totalRows,
-                    TotalPages = (int)Math.Ceiling(pageCount),
-                    CurrentRowCount = currentRowCount,
-                    RowCount = rowCount
-                },
-                Customers = _mapper.Map<IEnumerable<CustomerSearchViewModel>>(result)
-            };
-            
-            return model;
-        }
-
         public async Task<CustomerSearchListViewModel> GetAzurePagedSearchAsync(string q, string sortField, string sortOrder, int page, int pageSize)
         {
             if (page <= 0)
@@ -88,7 +58,10 @@ namespace Bank.Web.Services.Customers
             
             foreach (var id in result.Ids)
                 tmpCustomerList.Add(await _customerRepository.GetByIdAsync(id));
-
+            
+            var currentRowCount = ((page - 1) * pageSize) + 1; //first,
+            var rowCount = currentRowCount + result.Ids.Count() - 1; //last
+            
             var model = new CustomerSearchListViewModel()
             {
                 PagingViewModel = new PagingViewModel
@@ -96,10 +69,12 @@ namespace Bank.Web.Services.Customers
                     Page = page,
                     Q = q,
                     PageSize = pageSize,
-                    MaxRowCount = (int) result.TotalRowCount, //todo, change to long on pageing view model.
+                    MaxRowCount = (int) result.TotalRowCount,
                     SortField = sortField,
                     SortOrder = sortOrder,
                     OppositeSortOrder = sortOrder == "asc" ? "desc" : "asc",
+                    RowCount = rowCount,
+                    CurrentRowCount = currentRowCount,
                 },
                 
                 Customers = _mapper.Map<IEnumerable<CustomerSearchViewModel>>(tmpCustomerList)

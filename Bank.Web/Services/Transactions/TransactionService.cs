@@ -25,17 +25,6 @@ namespace Bank.Web.Services.Transactions
             _accountRepository = accountRepository;
         }
 
-        public async Task<TransactionDetailsListViewModel> GetByAllIdAsync(int accountId)
-        {
-            var model = new TransactionDetailsListViewModel
-            {
-                Transactions = _mapper.Map<IEnumerable<TransactionDetailsViewModel>>(await _transactionRepository.ListAllByAccountIdAsync(accountId)),
-                AccountId = accountId
-            };
-
-            return model;
-        }
-
         public async Task<TransactionDetailsListViewModel> GetAmountByIdAsync(int accountId, int skip, int take)
         {
             var model = new TransactionDetailsListViewModel
@@ -47,18 +36,6 @@ namespace Bank.Web.Services.Transactions
                     .Take(take).ToListAsync().ConfigureAwait(false)),
                 AccountId = accountId
             };
-            return model;
-        }
-
-        public async Task<TransactionListViewModel> GetTransactions(int accountId, int offset, int limit)
-        {
-            var model = new TransactionListViewModel
-            {
-                Transactions = _mapper.Map<IEnumerable<TransactionDetailsViewModel>>(await _transactionRepository.ListAllByAccountIdAsync(accountId).Result
-                    .Skip(offset)
-                    .Take(limit).ToListAsync().ConfigureAwait(false)),
-            };
-
             return model;
         }
 

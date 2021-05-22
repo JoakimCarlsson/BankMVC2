@@ -6,7 +6,6 @@ namespace Bank.Web.Services.Customers
     public interface ICustomerService
     {
         public Task<CustomerDetailsViewModel> GetByIdAsync(int id);
-        public Task<CustomerSearchListViewModel> GetPagedSearchAsync(string q, int page, int pageSize);
         public Task<CustomerSearchListViewModel> GetAzurePagedSearchAsync(string q, string sortField, string sortOrder, int page, int pageSize);
         public Task SaveCustomerAsync(CustomerBaseViewModel model);
         public Task<CustomerEditViewModel> GetCustomerEditAsync(int id);
