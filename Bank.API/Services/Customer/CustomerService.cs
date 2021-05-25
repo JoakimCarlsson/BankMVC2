@@ -15,9 +15,9 @@ namespace Bank.API.Services.Customer
             _customerRepository = customerRepository;
             _mapper = mapper;
         }
-        public async Task<bool> UserExists(int id)
+        public Task<bool> UserExists(int id)
         {
-            return _customerRepository.GetByIdAsync(id) is not null;
+            return Task.FromResult(_customerRepository.GetByIdAsync(id) is not null);
         }
 
         public async Task<CustomerDetailsViewModel> GetCustomerDetails(int id)

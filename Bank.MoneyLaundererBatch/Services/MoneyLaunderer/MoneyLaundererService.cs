@@ -17,7 +17,7 @@ namespace Bank.MoneyLaundererBatch.Services.MoneyLaunderer
             _customerRepository = customerRepository;
         }
 
-        public async Task<IEnumerable<string>> GetCountries() => _customerRepository.ListAllAsync().GetAwaiter().GetResult().Select(i => i.Country).Distinct();
+        public Task<IEnumerable<string>> GetCountries() => Task.FromResult<IEnumerable<string>>(_customerRepository.ListAllAsync().GetAwaiter().GetResult().Select(i => i.Country).Distinct());
 
         public async Task<List<CustomerReport>> GetTransactionsOverAmountAsync(DateTime date, string country, decimal amount)
         {

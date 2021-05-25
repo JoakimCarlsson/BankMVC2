@@ -49,9 +49,9 @@ namespace Bank.Web.Services.User
             return model;
         }
 
-        public async Task<UserEditViewModel> GetUserEdit(string id)
+        public  Task<UserEditViewModel> GetUserEdit(string id)
         {
-            return _mapper.Map<UserEditViewModel>(_userManager.Users.First(i => i.Id == id));
+            return Task.FromResult(_mapper.Map<UserEditViewModel>(_userManager.Users.First(i => i.Id == id)));
         }
 
         public async Task<UserViewModel> GetUserByIdAsync(string id)
@@ -75,11 +75,11 @@ namespace Bank.Web.Services.User
             return list;
         }
 
-        public async Task<List<string>> GetAllRolesAsync()
+        public Task<List<string>> GetAllRolesAsync()
         {
             List<string> tmpList = new();
             tmpList.AddRange(_roleManager.Roles.Select(i => i.Name));
-            return tmpList;
+            return Task.FromResult(tmpList);
         }
 
         public async Task SaveUserAsync(UserBaseViewModel model)

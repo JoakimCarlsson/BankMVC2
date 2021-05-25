@@ -14,9 +14,9 @@ namespace Bank.Data.Repositories.Transaction
             _dbContext = dbContext;
         }
 
-        public async Task<IQueryable<Models.Transaction>> ListAllByAccountIdAsync(int accountId)
+        public Task<IQueryable<Models.Transaction>> ListAllByAccountIdAsync(int accountId)
         {
-            return _dbContext.Transactions.Where(i => i.AccountId == accountId).AsQueryable();
+            return Task.FromResult(_dbContext.Transactions.Where(i => i.AccountId == accountId).AsQueryable());
         }
     }
 }
