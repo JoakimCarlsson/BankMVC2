@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -30,5 +31,14 @@ namespace Bank.API.ViewModels.Customer
         public string Telephonenumber { get; set; }
         [DisplayName("Email Address")]
         public string Emailaddress { get; set; }
+        public IEnumerable<AccountCustomerViewModel> Accounts { get; set; }
+
+    }
+
+    public class AccountCustomerViewModel
+    {
+        public int AccountId { get; set; }
+        public decimal Balance { get; set; }
+        public string Type { get; set; }
     }
 }

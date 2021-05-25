@@ -146,7 +146,6 @@ namespace Bank.Web.Services.Customers
             }
 
             return tmpList;
-            // return _mapper.Map<IEnumerable<AccountCustomerViewModel>>(result.Select(i => i.Account));
         }
     }
 }

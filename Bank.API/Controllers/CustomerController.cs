@@ -50,13 +50,13 @@ namespace Bank.API.Controllers
         
         private string GenerateJSONWebToken(CustomerViewModel customerViewInfo)    
         {    
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));    
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));    //hämtar min jwt nyckel ifrån appsettings.json. 
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.NameId, customerViewInfo.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, customerViewInfo.EmailAddress), //
+                new Claim(JwtRegisteredClaimNames.NameId, customerViewInfo.Id.ToString()), //stoppar in vårat ID som då kom ifrån våran CUstomerViewModel. 
+                new Claim(JwtRegisteredClaimNames.Email, customerViewInfo.EmailAddress), //email i detta fall är helt väderlöst. 
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
             
